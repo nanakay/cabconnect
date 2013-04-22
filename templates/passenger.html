@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>	
+	<head>
+		<title>PickMeApp</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href = "css/bootstrap.css" type = "text/css" rel = "stylesheet">
+		<script type="text/javascript" src = "javascript/bootstrap.js"></script>
+	</head>
+	
+	<body class = "container">
+		<form class="form-horizontal" action='' method="POST">
+  <fieldset>
+    <div id="legend">
+      <legend class="">Send a request to find taxis around you</legend>
+    </div>
+    <div class="control-group">
+      <!-- Username -->
+      <label class="control-label"  for="username">Current location</label>
+      <div class="controls">
+        <input type="text" id="username" name="current_location" placeholder="Choose your current location" class="input-xlarge">
+        <p class="help-block"></p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <!-- E-mail -->
+      <label class="control-label" for="email">Destination</label>
+      <div class="controls">
+        <input type="text" id="email" name="destination" placeholder="Where are you going to?" class="input-xlarge">
+        <p class="help-block"></p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <!-- Password-->
+      <label class="control-label" for="password">Price Offer</label>
+      <div class="controls">
+        <input type="text" id="price" name="price" placeholder="What price are you willing to pay?" class="input-xlarge">
+        <p class="help-block"></p>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <!-- Password-->
+      <label class="control-label" for="password">Other Info</label>
+      <div class="controls">
+        <textarea id="other_info" name="other_info" class="span4" placeholder="Anything peculiar you would want the driver to know?" rows="5"></textarea>
+        <p class="help-block"></p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <button class="btn btn-success">Get A Taxi</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+	</body>
+</html>
