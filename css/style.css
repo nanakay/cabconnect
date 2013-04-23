@@ -1,0 +1,19 @@
+body{
+    background-image: url("../img/taxi_back.jpg");
+    color: #ffffff;
+}
+
+.modal-header{
+    background-color: #1a1a1a;
+}
+
+.modal-header h3{
+    color: #ffffff;
+}
+
+.well{
+    background-color:rgba(0,0,0,0.9);
+}
+.legend{
+    color: #ffffff;
+}
