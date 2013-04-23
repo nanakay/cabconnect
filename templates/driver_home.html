@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>	
+	<head>
+		<title>PickMeApp</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link href = "css/bootstrap.css" type = "text/css" rel = "stylesheet">
+		<script type = "text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src = "js/bootstrap.js"></script>
+		<script type="text/javascript" src = "js/scripts.js"></script>
+        
+	</head>
+	
+	<body class = "container">
+		<script>
+    
+</script>
+	
+		<div class="navbar navbar-inverse nav">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="/">cabKonect</a>
+			
+          	<div class="nav-collapse collapse">
+              <ul class="nav">
+                  <li class="divider-vertical"></li>
+                  <li><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+              </ul>
+              <div class="pull-right">
+                <ul class="nav pull-right">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, User <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user/preferences"><i class="icon-cog"></i> Preferences</a></li>
+                            <li><a href="/help/support"><i class="icon-envelope"></i> Contact Support</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/auth/logout"><i class="icon-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+	
+		<div style = "float: right; width: 500px">
+			<h3>List of offers closer to you</h3>
+			<hr>
+			{% for request in passenger_request %}
+				<div>
+					<strong>Passenger's Details</strong>
+					<img alt="" src="/img?img_key={{request.passenger.picture.key()}}">
+					<span>Full Name: {{request.passenger.first_name}} {{request.passenger.last_name}}</span>
+					<span>phone Number: {{request.passenger.phone_number}}</span>
+					<span>Current Location: {{request.current_location}}</span>
+					<span>Destination: {{request.destination}}</span>
+					<span>Price Offered: {{request.price_offer}}</span>
+					<span>Added Details: {{request.other_info}}</span>
+				</div>
+				<hr>
+			{% endfor %}
+		</div>
+		
+		
+		
+		<div class="well" style="width:300px; padding: 8px 0;">
+    <div style="overflow-y: hidden; overflow-x: hidden;">
+        <ul class="nav nav-list">
+            <li><label class="tree-toggler nav-header">Header 1</label>
+                <ul class="nav nav-list tree">
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                </ul>
+            </li>
+            <li class="divider"></li>
+            <li><label class="tree-toggler nav-header"><a data-toggle = "collapse" href = "#like">Header 2</a></label>
+                <ul id = "like" class="nav nav-list tree collapse">
+                    <li ><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+	</body>
+</html>

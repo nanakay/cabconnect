@@ -47,7 +47,7 @@ class MainHandler(Handler):
         
 class SignupHandler(Handler):
     def get(self):
-        self.render("home.html")
+        self.render("google.html")
         
 class PassengerHandler(Handler):
     def get(self):
@@ -83,12 +83,26 @@ class DriverHandler(Handler):
             request.put()
         else:
             self.write("Fill it all out")
+            
+class DriverHome(Handler):
+    def get(self):
+        passenger_requests = Passenger_Request.gql("ORDER BY created")
+        self.render("driver_home.html", passenger_requests = passenger_requests)
+        
+class ImageHandler(Handler):
+    def get(self):
+        passenger = db.get(self.request.get('img_key'))
+        if passenger.picture:
+            self.response.headers['Content-Type'] = 'image/png'
+            self.write(passenger.picture)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/signup', SignupHandler),
     ('/passenger', PassengerHandler),
-    ('/driver', DriverHandler)
+    ('/driver', DriverHandler),
+    ('/home', DriverHome),
+    ('/img', ImageHandler)
     
     
 ], debug=True)

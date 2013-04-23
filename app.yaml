@@ -1,4 +1,4 @@
-application: pickmeapp
+application: cabkonekt
 version: 1
 runtime: python27
 api_version: 1
@@ -15,7 +15,7 @@ handlers:
 - url: /img
   static_dir: img
   
-- url: /javascript
+- url: /js
   static_dir: javascript
 
 - url: .*
