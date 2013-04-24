@@ -17,3 +17,9 @@ body{
 .legend{
     color: #ffffff;
 }
+
+.pass_details label {
+	width: 150px;
+	font-weight: bold;
+	display: inline-block;
+}

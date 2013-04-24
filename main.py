@@ -51,7 +51,7 @@ class MainHandler(Handler):
 
 class SignupHandler(Handler):
     def get(self):
-        self.render("passenger.html", error="")
+        self.render("new.html", error="")
 
     def post(self):
         action = self.request.get("action")
