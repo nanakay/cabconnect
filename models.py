@@ -4,6 +4,8 @@ import random
 import string
 import hashlib
 
+from google.appengine.api import urlfetch
+
 def make_salt():
     return ''.join(random.choice(string.letters) for i in range(5))
 
@@ -35,6 +37,7 @@ class Passenger(db.Model):
         else:
             password, salt= make_pw_hash(password)
             newPassenger = Passenger(first_name = first_name, last_name = last_name,email=email, password=password, phone_number=phone_number,salt=salt)
+            newPassenger.picture = db.Blob(urlfetch.Fetch("https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yo/r/UlIqmHJn-SK.gif").content)
             newPassenger.put()
             return False, newPassenger
 
@@ -60,7 +63,7 @@ class Passenger_Request(db.Model): #Might not be useful, still thinking through 
     destination = db.StringProperty(required = True)
     price_offer = db.StringProperty()
     other_info = db.TextProperty()
-    created = db.DateTimeProperty(required=True)
+    created = db.DateTimeProperty(auto_now_add = True)
     
 class Driver(db.Model):
     first_name = db.StringProperty(required = True)

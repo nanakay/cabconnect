@@ -4,22 +4,25 @@
 		<title>PickMeApp</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href = "css/bootstrap.css" type = "text/css" rel = "stylesheet">
-		<script type="text/javascript" src = "javascript/bootstrap.js"></script>
+		<script type="text/javascript" src = "js/bootstrap.js"></script>
 		<script type="text/javascript" src = "js/scripts.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+		
 	</head>
 	
 	<body onload = "initialize()" class = "container">
+		<div id = "map_canvas" style = "width:400px; height: 500px; float: right;"></div>
+	
 		<form class="form-horizontal" action='' method="POST">
   <fieldset>
     <div id="legend">
-      <legend class="">Send a request to find taxis around you</legend>
+      <legend class="">Get A Taxi</legend>
     </div>
     <div class="control-group">
       <!-- Username -->
       <label class="control-label"  for="username">Current location</label>
       <div class="controls">
-        <input type="text" id="username" name="current_location" placeholder="Choose your current location" class="input-xlarge">
+        <input type="text" id = "searchTextField" name="current_location" placeholder="Choose your current location" class="input-xlarge">
         <p class="help-block"></p>
       </div>
     </div>
@@ -28,7 +31,7 @@
       <!-- E-mail -->
       <label class="control-label" for="email">Destination</label>
       <div class="controls">
-        <input type="text" id="searchTextField" name="destination" placeholder="Where are you going to?" class="input-xlarge">
+        <input type="text" id="destination" name="destination" placeholder="Where are you going to?" class="input-xlarge">
         <p class="help-block"></p>
       </div>
     </div>

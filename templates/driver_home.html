@@ -5,8 +5,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link href = "css/bootstrap.css" type = "text/css" rel = "stylesheet">
+		<link href = "css/bootstrap.min.css" type = "text/css" rel = "stylesheet">
+		<link href = "css/bootstrap-responsive.css" type = "text/css" rel = "stylesheet">
+		<link href = "css/bootstrap-responsive.min.css" type = "text/css" rel = "stylesheet">
+		<link href = "css/styles.css" type = "text/css" rel = "stylesheet">
 		<script type = "text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src = "js/bootstrap.js"></script>
+		<script type="text/javascript" src = "js/bootstrap.min.js"></script>
 		<script type="text/javascript" src = "js/scripts.js"></script>
         
 	</head>
@@ -51,23 +56,57 @@
 		<div style = "float: right; width: 500px">
 			<h3>List of offers closer to you</h3>
 			<hr>
-			{% for request in passenger_request %}
-				<div>
-					<strong>Passenger's Details</strong>
-					<img alt="" src="/img?img_key={{request.passenger.picture.key()}}">
-					<span>Full Name: {{request.passenger.first_name}} {{request.passenger.last_name}}</span>
-					<span>phone Number: {{request.passenger.phone_number}}</span>
-					<span>Current Location: {{request.current_location}}</span>
-					<span>Destination: {{request.destination}}</span>
-					<span>Price Offered: {{request.price_offer}}</span>
-					<span>Added Details: {{request.other_info}}</span>
+			{% for request in passenger_requests %}
+				<div class = "pass_details">
+					<!--  <img alt="" src="/img?img_key={{request.passenger.key()}}">-->
+					<span><label>Full Name:</label> {{request.passenger.first_name}} {{request.passenger.last_name}}</span><br>
+					<span><label>Current Location:</label> {{request.current_location}}</span><br>
+					<span><label>Destination:</label> {{request.destination}}</span><br>
+					<a class = "btn btn-primary" data-toggle="modal" href = "#{{request.passenger.phone_number}}_request">More Details</a>
 				</div>
 				<hr>
 			{% endfor %}
 		</div>
 		
+		{% for request in passenger_requests %}
+		<div id="{{request.passenger.phone_number}}_request" class="modal hide fade">
+		<div class="modal-header">
+            <button class="close" data-dismiss="modal">×</button>
+            <h3>Passenger's Request Details</h3>
+    </div>
+    
+<div class="modal-body">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="span2">
+            <div class="logowrapper">
+                <img width = "100px" height = "100px" class="logoicon" src="/img?img_key={{request.passenger.key()}}" alt="App Logo"/>
+            </div>
+            </div>
+            <div class="pass_details span10">
+            	<div><label>Full Name:</label> {{request.passenger.first_name}} {{request.passenger.last_name}}</div>
+            	<div><label>Phone Number:</label> {{request.passenger.phone_number}}</div>
+            	<div><label>Current Location:</label> {{request.current_location}}</div>
+            	<div><label>Destination:</label> {{request.destination}}</div>
+            	<div><label>Other Details:</label> {{request.other_info}}</div>
+                <form class="form-horizontal" method = "POST">
+                  	<hr>
+                    <div class="help-block">
+                        <button name = "response" type="submit" class="btn btn-medium btn-info">Accept</button>
+                        <button name = "response" type="submit" class="btn btn-medium btn-info">Decline</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="modal-footer">
+        <p><i>Lastest Update on October 2nd, 2012</i></p>
+    </div>
+</div>
+{% endfor %}
 		
-		
+		<!--  
 		<div class="well" style="width:300px; padding: 8px 0;">
     <div style="overflow-y: hidden; overflow-x: hidden;">
         <ul class="nav nav-list">
@@ -78,14 +117,21 @@
                 </ul>
             </li>
             <li class="divider"></li>
-            <li><label class="tree-toggler nav-header"><a data-toggle = "collapse" href = "#like">Header 2</a></label>
+            {% for request in passenger_requests %}
+            <li><label class="tree-toggler nav-header"><a data-toggle = "collapse" href = "#like">Full Name: {{request.passenger.first_name}} {{request.passenger.last_name}}</a></label>
                 <ul id = "like" class="nav nav-list tree collapse">
-                    <li ><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
+                    <span>phone Number: {{request.passenger.phone_number}}</span><br>
+					<span>Current Location: {{request.current_location}}</span><br>
+					<span>Destination: {{request.destination}}</span><br>
+					<span>Price Offered: {{request.price_offer}}</span><br>
+					<span>Added Details: {{request.other_info}}</span><br>
                 </ul>
             </li>
+            {% endfor %}
         </ul>
     </div>
+   
 </div>
+ -->
 	</body>
 </html>

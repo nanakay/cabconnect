@@ -1,19 +1,89 @@
-$(document).ready(function () {
-            $('.dropdown-toggle').dropdown();
-        });
-
-$(document).ready(function () {
-    $('label.tree-toggler').click(function () {
-        $(this).parent().children('ul.tree').toggle(300);
-    });
+$(document).ready(function() {
+	$('.dropdown-toggle').dropdown();
 });
 
-
+$(document).ready(function() {
+	$('label.tree-toggler').click(function() {
+		$(this).parent().children('ul.tree').toggle(300);
+	});
+});
 function initialize() {
 
-	  var input = /** @type {HTMLInputElement} */(document.getElementById('searchTextField'));
-	  var autocomplete = new google.maps.places.Autocomplete(input);
+//  var input = /** @type {HTMLInputElement} */(document.getElementById('searchTextField'));
+//  var autocomplete = new google.maps.places.Autocomplete(input);
 
-	  autocomplete.bindTo('bounds', map);
+ // autocomplete.bindTo('bounds', map);
+	var input = document.getElementById('searchTextField');
+	
+	var options = {
+	componentRestrictions: {country: 'gh'}
+	};
 
-	}
+	autocomplete = new google.maps.places.Autocomplete(input, options);
+	
+
+	var map,myPosition;
+	
+	map = new google.maps.Map(document.getElementById('map_canvas'), {
+		   
+        mapTypeId: google.maps.MapTypeId.ROADMAP	
+    });
+   
+    var directionsRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+       
+    });
+
+    if (navigator.geolocation) {
+	    
+        navigator.geolocation.getCurrentPosition(function(position){
+            myPosition = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                                                
+			map.setCenter(myPosition)
+			map.setZoom(17)
+			var options = {
+			  position: myPosition
+			};
+			var marker = new google.maps.Marker(options);
+			marker.setMap(map);
+			marker.setAnimation(google.maps.Animation.BOUNCE);	
+		
+        });
+        
+    }
+    
+    var geocoder = new google.maps.Geocoder();
+    var center = new google.maps.LatLng(-34.397, 150.644);
+    var request = {
+    	      address: "-34.397, 150.644"
+    	    };
+	
+    geocoder.geocode({'latLng': center}, function(results, status) {
+    	if (status == google.maps.GeocoderStatus.OK) {
+    		if (results[0]) {
+    			input.value = results[1].formatted_address;
+    			window.console.log(results[0].formatted_address + " " + center);
+    			}
+    		else {
+    			window.console.log("nothing found");
+    		}
+    	}
+    	else {
+    		window.console.log("nothing found for " + center + " " + status);
+    	}
+    });
+    
+//    geocoder.geocode(request, function(results, status) {
+//        if (status == google.maps.GeocoderStatus.OK) {
+//            position = results[0].geometry.location
+//            window.console.log(position.formatted_address + " "  + status);
+//        } else {
+//          window.console.log('failed to geocode address: '  + status);
+//        }
+//      });
+}
+
+
+
+
+
