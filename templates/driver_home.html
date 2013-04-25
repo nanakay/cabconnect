@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html>	
 	<head>
-		<title>PickMeApp</title>
+		<title>Accra Cab Services</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link href = "css/bootstrap.css" type = "text/css" rel = "stylesheet">
 		<link href = "css/bootstrap.min.css" type = "text/css" rel = "stylesheet">
-		<link href = "css/bootstrap-responsive.css" type = "text/css" rel = "stylesheet">
 		<link href = "css/bootstrap-responsive.min.css" type = "text/css" rel = "stylesheet">
-		<link href = "css/style.css" type = "text/css" rel = "stylesheet">
-		<script type = "text/javascript" src="js/jquery.js"></script>
-		<script type="text/javascript" src = "js/bootstrap.js"></script>
-		<script type="text/javascript" src = "js/bootstrap.min.js"></script>
-		<script type="text/javascript" src = "js/scripts.js"></script>
+		<link href = "css/styles.css" type = "text/css" rel = "stylesheet">
         
 	</head>
 	
@@ -29,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="/">cabKonect</a>
+            <a class="brand" href="/">Accra Cab Services</a>
 			
           	<div class="nav-collapse collapse">
               <ul class="nav">
@@ -38,10 +32,10 @@
               </ul>
               <div class="pull-right">
                 <ul class="nav pull-right">
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, User <b class="caret"></b></a>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, {{company.company_name}} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/user/preferences"><i class="icon-cog"></i> Preferences</a></li>
-                            <li><a href="/help/support"><i class="icon-envelope"></i> Contact Support</a></li>
+                            <li><a href="/user/preferences"><i class="icon-cog"></i> Profile</a></li>
+                            <li><a href="/help/support"><i class="icon-envelope"></i> Settings</a></li>
                             <li class="divider"></li>
                             <li><a href="/auth/logout"><i class="icon-off"></i> Logout</a></li>
                         </ul>
@@ -53,8 +47,8 @@
     </div>
 </div>
 	
-		<div style = "float: right; width: 500px">
-			<h3>List of offers closer to you</h3>
+		<div id = "request">
+			<h3>List of Requests From Clients</h3>
 			<hr>
 			{% for request in passenger_requests %}
 				<div class = "pass_details">
@@ -62,14 +56,14 @@
 					<span><label>Full Name:</label> {{request.passenger.first_name}} {{request.passenger.last_name}}</span><br>
 					<span><label>Current Location:</label> {{request.current_location}}</span><br>
 					<span><label>Destination:</label> {{request.destination}}</span><br>
-					<a class = "btn btn-primary" data-toggle="modal" href = "#{{request.passenger.phone_number}}_request">More Details</a>
+					<a class = "btn btn-primary" data-toggle="modal" href = "#{{request.key()}}_request">More Details</a>
 				</div>
 				<hr>
 			{% endfor %}
 		</div>
 		
 		{% for request in passenger_requests %}
-		<div id="{{request.passenger.phone_number}}_request" class="modal hide fade">
+		<div id="{{request.key()}}_request" class="modal hide fade">
 		<div class="modal-header">
             <button class="close" data-dismiss="modal">×</button>
             <h3>Passenger's Request Details</h3>
@@ -92,8 +86,9 @@
                 <form class="form-horizontal" method = "POST">
                   	<hr>
                     <div class="help-block">
-                        <button name = "response" type="submit" class="btn btn-medium btn-info">Accept</button>
-                        <button name = "response" type="submit" class="btn btn-medium btn-info">Decline</button>
+                        <a class="btn btn-medium btn-info" name = "response" data-dismiss = "modal"  data-toggle = "modal" href = "#{{request.key()}}">Accept</a>
+                        <a class="btn btn-medium btn-info" name = "response" data-dismiss = "modal"  data-toggle = "modal" href = "#{{request.key()}}">Decline</a>
+                    	<a class="btn btn-medium btn-info" name = "response" data-dismiss = "modal"  data-toggle = "modal" href = "#">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -101,10 +96,41 @@
     </div>
 </div>
     <div class="modal-footer">
-        <p><i>Lastest Update on October 2nd, 2012</i></p>
+        <p><i>Accra Cab Services</i></p>
     </div>
 </div>
 {% endfor %}
+
+<!-- Start of accept or decline modal message -->
+{% for request in passenger_requests %}
+<div id="{{request.key()}}" class="modal hide fade">
+		<div class="modal-header">
+			<input name = "request_key" value = "{{request.key()}}" type = "hidden">
+            <button class="close" data-dismiss="modal">×</button>
+            <h3>Tell The Client Something</h3>
+    </div>
+    
+<div class="modal-body">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="pass_details span10">
+            	
+                <form class="form-horizontal" method = "POST">
+                    <div class="help-block">
+                    	<textarea class = "span10" name = "message">Hi {{request.passenger.first_name}},</textarea>
+                        <button name = "response" type="submit" class="btn btn-medium btn-info">OK</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="modal-footer">
+        <p><i>Accra Cab Services</i></p>
+    </div>
+</div>
+{% endfor %}
+<!-- Start of accept or decline modal message -->
 		
 		<!--  
 		<div class="well" style="width:300px; padding: 8px 0;">
@@ -133,5 +159,9 @@
    
 </div>
  -->
+ 
+ 		<script type = "text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src = "js/bootstrap.min.js"></script>
+		<script type="text/javascript" src = "js/scripts.js"></script>
 	</body>
 </html>

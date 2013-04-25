@@ -1,0 +1,46 @@
+<html> 
+      <head> 
+          <title>
+	        Testing
+	      </title>
+          <script src="https://maps.googleapis.com/maps/api/js?sensor=false&v=3.exp"></script>
+		  <script type="text/javascript">
+var map,myPosition;
+function initialize() {
+   map = new google.maps.Map(document.getElementById('map_canvas'), {
+   
+        mapTypeId: google.maps.MapTypeId.ROADMAP	
+    });
+   
+    var directionsRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+       
+    });
+
+    if (navigator.geolocation) {
+	    
+        navigator.geolocation.getCurrentPosition(function(position){
+            myPosition = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                                                
+			map.setCenter(myPosition)
+			map.setZoom(17)
+			var options = {
+			  position: myPosition
+			};
+			var marker = new google.maps.Marker(options);
+			marker.setMap(map);
+			marker.setAnimation(google.maps.Animation.BOUNCE);	
+		
+        });
+		
+    }
+
+	}
+	 
+</script>
+      </head> 
+      <body onLoad="initialize()"> 
+	  <div id="map_canvas" style="height:705px; width:990px; float:left;"></div>
+	  
+	  </body>
+</html>

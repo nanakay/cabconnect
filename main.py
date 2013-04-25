@@ -31,7 +31,15 @@ def delete_cookie(self, name):
 
 def set_cookie(self, name, value):
     self.response.headers.add_header('Set-Cookie', '%s=%s; Path=/' % (name, value))
-
+    
+def count_connected_notifications(accepted_connections):
+    count = 0
+    if accepted_connections == None:
+        return 0
+    else:
+        for e in accepted_connections:
+            count += 1
+        return count
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -88,7 +96,12 @@ class SignupHandler(Handler):
         
 class PassengerHandler(Handler):
     def get(self):
-        self.render("passenger.html")
+        error = self.request.get("error")
+        key = self.request.cookies.get("detector")
+        passenger = db.get(key)
+        accepted_connections = Connected.gql("WHERE viewed = False")
+        no_of_notifications = count_connected_notifications(accepted_connections)
+        self.render("passenger.html", passenger = passenger, error = error, notifications = no_of_notifications, accepted_connections = accepted_connections)
         
     def post(self):
         key = self.request.cookies.get("detector")
@@ -98,13 +111,18 @@ class PassengerHandler(Handler):
         price_offer = self.request.get("price")
         info = self.request.get("other_info")
         
+        error = "Please provide all required details"
         if passenger and current_location and destination and price_offer:
             request = Passenger_Request(passenger = passenger, current_location = current_location, destination = destination, price_offer = price_offer, other_info = info)
             
             request.put()
+            self.render("success.html", passenger = passenger)
+        else:
+            self.redirect("/passenger?error=%s"%error)
 
 class DriverHandler(Handler):
     def get(self):
+        
         self.render("driver.html")
         
     def post(self):
@@ -121,8 +139,32 @@ class DriverHandler(Handler):
             
 class DriverHome(Handler):
     def get(self):
+        company_name = self.request.cookies.get("c_name")
+        company = Driver.gql("WHERE company_name = :1", company_name).get()
         passenger_requests = Passenger_Request.gql("ORDER BY created")
-        self.render("driver_home.html", passenger_requests = passenger_requests)
+        self.render("driver_home.html", passenger_requests = passenger_requests, company = company)
+        
+    def post(self):
+        response = self.request.get("response")
+        
+        if response == "Decline":
+            message = self.request.get("message")
+            self.redirect("/home")
+        elif response == "OK":
+            key = self.request.get("request_key")
+            request = db.get(key)
+            passenger = request.passenger
+            driver_name = self.request.get("driver_name")
+            driver = Driver.gql("WHERE first_name = :1", driver_name).get()
+            message = self.request.get("message")
+            
+            new_connection = Connected(passenger = passenger, driver = driver, location = request.current_location, destination = request.destination,
+                                       message = message)
+            new_connection.put()
+            request.processed = True
+            self.redirect("/home")
+        
+            
         
 class ImageHandler(Handler):
     def get(self):

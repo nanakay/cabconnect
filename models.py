@@ -64,6 +64,7 @@ class Passenger_Request(db.Model): #Might not be useful, still thinking through 
     price_offer = db.StringProperty()
     other_info = db.TextProperty()
     created = db.DateTimeProperty(auto_now_add = True)
+    processed = db.BooleanProperty(default = False)
     
 class Driver(db.Model):
     first_name = db.StringProperty(required = True)
@@ -83,6 +84,8 @@ class Connected(db.Model):
     location = db.StringProperty(required = True)
     destination = db.StringProperty(required = True)
     price = db.StringProperty()
+    message = db.TextProperty()
+    viewed = db.BooleanProperty(default = False)
 
 
 class Driver_Request(db.Model):

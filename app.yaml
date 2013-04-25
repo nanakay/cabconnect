@@ -25,7 +25,7 @@ handlers:
 
 - url: /js
 
-  static_dir: javascript
+  static_dir: js
 
 
 

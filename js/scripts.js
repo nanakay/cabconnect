@@ -14,12 +14,14 @@ function initialize() {
 
  // autocomplete.bindTo('bounds', map);
 	var input = document.getElementById('searchTextField');
+	var input2 = document.getElementById('TextField');
 	
 	var options = {
 	componentRestrictions: {country: 'gh'}
 	};
 
 	autocomplete = new google.maps.places.Autocomplete(input, options);
+	autocomplete = new google.maps.places.Autocomplete(input2, options);
 	
 
 	var map,myPosition;
@@ -58,11 +60,11 @@ function initialize() {
     	      address: "-34.397, 150.644"
     	    };
 	
-    geocoder.geocode({'latLng': center}, function(results, status) {
+    geocoder.geocode({'latLng': myPosition}, function(results, status) {
     	if (status == google.maps.GeocoderStatus.OK) {
     		if (results[0]) {
     			input.value = results[1].formatted_address;
-    			window.console.log(results[0].formatted_address + " " + center);
+    			window.console.log(results[0].formatted_address + " " + myPosition);
     			}
     		else {
     			window.console.log("nothing found");

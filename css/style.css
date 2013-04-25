@@ -11,15 +11,30 @@ body{
     color: #ffffff;
 }
 
+.modal-body{
+    max-height: 100%;
+    max-width: 24%;
+    padding: 0;
+}
+
 .well{
     background-color:rgba(0,0,0,0.9);
+    margin-bottom: 0;
+    padding: 19px 19px 1px 19px;
 }
 .legend{
     color: #ffffff;
 }
 
-.pass_details label {
-	width: 150px;
-	font-weight: bold;
-	display: inline-block;
+.alert{
+    max-width: 80%;
+}
+
+a{
+    color: orange;
+}
+
+.btn{
+    margin-top: 15px;
+    padding: 6px 12px;
 }
