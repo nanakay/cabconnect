@@ -94,12 +94,27 @@ class SignupHandler(Handler):
                 error = 'Phone number is already in use.'
                 self.render("new.html", error=error)
             else:
-               login(self,user,user_type)
+               login(self,user,'verify')
 
 
 class Verification(Handler):
     def get(self):
         self.render('verify.html')
+
+    def post(self):
+        verify_code = self.request.get('verify')
+        currentUser = self.request.cookies.get("id")
+        if currentUser:
+            list = currentUser.split('|')
+            checkUser = check_id_hash(list[1])
+            if currentUser == checkUser:
+               user = list[1]
+            else:
+                error = "The code is incorrect"
+                self.render('verify.html')
+        else:
+            self.render('new.html')
+
 
 
 
