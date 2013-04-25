@@ -8,7 +8,7 @@ from google.appengine.api import images
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.api import images
-from models import Passenger, Driver, Passenger_Request, Connected, Driver_Request
+from models import Utilities,Passenger, Driver, Passenger_Request, Connected, Driver_Request
 
 template_dir = "templates"
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),autoescape = True)
@@ -31,6 +31,7 @@ def delete_cookie(self, name):
 
 def set_cookie(self, name, value):
     self.response.headers.add_header('Set-Cookie', '%s=%s; Path=/' % (name, value))
+<<<<<<< HEAD
     
 def count_connected_notifications(accepted_connections):
     count = 0
@@ -40,6 +41,14 @@ def count_connected_notifications(accepted_connections):
         for e in accepted_connections:
             count += 1
         return count
+=======
+
+def login(self, user, type):
+    hash_id = make_id_hash(int(user.key().id()))
+    set_cookie(self, 'id', hash_id)
+    self.redirect('/' + type)
+
+>>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -66,14 +75,18 @@ class SignupHandler(Handler):
         if action == "Login":
             phone_number = self.request.get("phone_number")
             password = self.request.get("password")
-            status, user = Passenger.check_passenger(phone_number, password)
+            status, user = Utilities.check_user(self,phone_number,password)
             if status:
+<<<<<<< HEAD
                 hash_id = make_id_hash(int(user.key().id()))
                 set_cookie(self, 'id', hash_id)
                 set_cookie(self, "detector", user.key())
                 self.redirect('/passenger')
+=======
+                login(self,user,(str(user.kind()).lower()))
+>>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
             else:
-                error ='Invalid login details'
+                error = "Invalid login details"
                 self.render("new.html", error=error)
 
         elif action == "Create Account":
@@ -82,12 +95,18 @@ class SignupHandler(Handler):
             last_name = self.request.get("last_name")
             phone_number = self.request.get("new_phone_number")
             password = self.request.get("new_password")
-#            user_type = self.request.get("userOption")
-            status, user = Passenger.create_passenger(email, first_name,last_name, phone_number, password)
+            user_type = self.request.get("userOption")
+
+            if user_type == 'passenger':
+                status, user = Passenger.create_passenger(email, first_name,last_name, phone_number, password)
+            else:
+                status, user = Driver.create_driver(first_name,last_name, phone_number, password)
+
             if status:
                 error = 'Phone number is already in use.'
                 self.render("new.html", error=error)
             else:
+<<<<<<< HEAD
                 hash_id = make_id_hash(int(user.key().id()))
                 set_cookie(self, 'id', hash_id)
                 set_cookie(self, "detector", user.key())
@@ -125,11 +144,46 @@ class DriverHandler(Handler):
         
         self.render("driver.html")
         
+=======
+               login(self,user,user_type)
+
+
+class Verification(Handler):
+    def get(self):
+        self.render('verify.html')
+
+
+
+class PassengerHandler(Handler):
+    def get(self):
+        self.render("passenger.html")
+
+#    def post(self):
+#        phone_number = self.request.cookies.get("number")
+#        passenger = Passenger.gql("WHERE phone_number = :1", phone_number)
+#        current_location = self.request.get("current_location")
+#        destination = self.request.get("destination")
+#        price_offer = self.request.get("price")
+#        info = self.request.get("other_info")
+#
+#        if current_location:
+#            current_split = current_location.split(" ")
+#
+#        if passenger and current_location and destination and price_offer:
+#            request = Passenger_Request(passenger = passenger, current_location = current_location, destination = destination, price_offer = price_offer, other_info = info)
+#            request.put()
+#
+class DriverHandler(Handler):
+    def get(self):
+        self.render("driver.html")
+
+>>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
     def post(self):
         phone_number = self.request.cookies.get("number")
         driver = Driver.gql("WHERE phone_number = :1", phone_number)
         current_location = self.request.get("current_location")
         destination = self.request.get("destination")
+<<<<<<< HEAD
         
         if driver and current_location and destination:
             request = Driver_Request(driver = driver, current_location = current_location, destination = destination)
@@ -175,6 +229,12 @@ class ImageHandler(Handler):
 
 #        if state == 'logout':
 #            delete_cookie(self, 'id')
+=======
+#
+#        if driver and current_location and destination:
+#            request = Driver_Request(driver = driver, current_location = current_location, destination = destination)
+#            request.put()
+>>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
 #        else:
 #            currentUser = self.request.cookies.get("id")
 #            if currentUser:
@@ -188,8 +248,14 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/logout', SignupHandler),
     ('/signup', SignupHandler),
+<<<<<<< HEAD
     ('/passenger', PassengerHandler),
     ('/driver', DriverHandler),
     ('/home', DriverHome),
     ('/img', ImageHandler)
+=======
+    ('/passenger' , PassengerHandler),
+    ('/driver', DriverHandler),
+    ('/verify', Verification)
+>>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
 ], debug=True)
