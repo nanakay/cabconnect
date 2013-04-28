@@ -4,9 +4,9 @@
 		<title>Accra Cab Services</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link href = "css/bootstrap.min.css" type = "text/css" rel = "stylesheet">
-		<link href = "css/bootstrap-responsive.min.css" type = "text/css" rel = "stylesheet">
-		<link href = "css/styles.css" type = "text/css" rel = "stylesheet">
+		<link href = "../css/bootstrap.min.css" type = "text/css" rel = "stylesheet">
+		<link href = "../css/bootstrap-responsive.min.css" type = "text/css" rel = "stylesheet">
+		<link href = "../css/styles.css" type = "text/css" rel = "stylesheet">
         
 	</head>
 	
@@ -82,6 +82,7 @@
             	<div><label>Phone Number:</label> {{request.passenger.phone_number}}</div>
             	<div><label>Current Location:</label> {{request.current_location}}</div>
             	<div><label>Destination:</label> {{request.destination}}</div>
+            	<div><label>Price Offered:</label> {{request.price_offer}}</div>
             	<div><label>Other Details:</label> {{request.other_info}}</div>
                 <form class="form-horizontal" method = "POST">
                   	<hr>

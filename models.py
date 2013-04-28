@@ -4,17 +4,14 @@ import random
 import string
 import hashlib
 
-<<<<<<< HEAD
 from google.appengine.api import urlfetch
 
 def make_salt():
     return ''.join(random.choice(string.letters) for i in range(5))
-=======
 class Utilities(db.Model):
     @staticmethod
     def make_salt():
         return ''.join(random.choice(string.letters) for i in range(5))
->>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
 
     @staticmethod
     def make_pw_hash(password):

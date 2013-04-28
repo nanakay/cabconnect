@@ -2,6 +2,7 @@ import webapp2
 import jinja2
 import re
 import hashlib
+import logging
 
 from google.appengine.api import images
 
@@ -31,7 +32,6 @@ def delete_cookie(self, name):
 
 def set_cookie(self, name, value):
     self.response.headers.add_header('Set-Cookie', '%s=%s; Path=/' % (name, value))
-<<<<<<< HEAD
     
 def count_connected_notifications(accepted_connections):
     count = 0
@@ -41,14 +41,12 @@ def count_connected_notifications(accepted_connections):
         for e in accepted_connections:
             count += 1
         return count
-=======
 
 def login(self, user, type):
     hash_id = make_id_hash(int(user.key().id()))
     set_cookie(self, 'id', hash_id)
     self.redirect('/' + type)
 
->>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -77,14 +75,10 @@ class SignupHandler(Handler):
             password = self.request.get("password")
             status, user = Utilities.check_user(self,phone_number,password)
             if status:
-<<<<<<< HEAD
                 hash_id = make_id_hash(int(user.key().id()))
                 set_cookie(self, 'id', hash_id)
                 set_cookie(self, "detector", user.key())
                 self.redirect('/passenger')
-=======
-                login(self,user,(str(user.kind()).lower()))
->>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
             else:
                 error = "Invalid login details"
                 self.render("new.html", error=error)
@@ -106,7 +100,6 @@ class SignupHandler(Handler):
                 error = 'Phone number is already in use.'
                 self.render("new.html", error=error)
             else:
-<<<<<<< HEAD
                 hash_id = make_id_hash(int(user.key().id()))
                 set_cookie(self, 'id', hash_id)
                 set_cookie(self, "detector", user.key())
@@ -139,13 +132,10 @@ class PassengerHandler(Handler):
         else:
             self.redirect("/passenger?error=%s"%error)
 
-class DriverHandler(Handler):
-    def get(self):
-        
-        self.render("driver.html")
-        
-=======
-               login(self,user,user_type)
+#class DriverHandler(Handler):
+#    def get(self):
+#        self.render("driver.html")
+#        login(self,user,user_type)
 
 
 class Verification(Handler):
@@ -153,37 +143,15 @@ class Verification(Handler):
         self.render('verify.html')
 
 
-
-class PassengerHandler(Handler):
-    def get(self):
-        self.render("passenger.html")
-
-#    def post(self):
-#        phone_number = self.request.cookies.get("number")
-#        passenger = Passenger.gql("WHERE phone_number = :1", phone_number)
-#        current_location = self.request.get("current_location")
-#        destination = self.request.get("destination")
-#        price_offer = self.request.get("price")
-#        info = self.request.get("other_info")
-#
-#        if current_location:
-#            current_split = current_location.split(" ")
-#
-#        if passenger and current_location and destination and price_offer:
-#            request = Passenger_Request(passenger = passenger, current_location = current_location, destination = destination, price_offer = price_offer, other_info = info)
-#            request.put()
-#
 class DriverHandler(Handler):
     def get(self):
         self.render("driver.html")
 
->>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
     def post(self):
         phone_number = self.request.cookies.get("number")
         driver = Driver.gql("WHERE phone_number = :1", phone_number)
         current_location = self.request.get("current_location")
         destination = self.request.get("destination")
-<<<<<<< HEAD
         
         if driver and current_location and destination:
             request = Driver_Request(driver = driver, current_location = current_location, destination = destination)
@@ -194,7 +162,7 @@ class DriverHandler(Handler):
 class DriverHome(Handler):
     def get(self):
         company_name = self.request.cookies.get("c_name")
-        company = Driver.gql("WHERE company_name = :1", company_name).get()
+        company = Driver.gql("WHERE company_name = :1 ORDER BY created", company_name).get()
         passenger_requests = Passenger_Request.gql("ORDER BY created")
         self.render("driver_home.html", passenger_requests = passenger_requests, company = company)
         
@@ -229,12 +197,10 @@ class ImageHandler(Handler):
 
 #        if state == 'logout':
 #            delete_cookie(self, 'id')
-=======
 #
 #        if driver and current_location and destination:
 #            request = Driver_Request(driver = driver, current_location = current_location, destination = destination)
 #            request.put()
->>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
 #        else:
 #            currentUser = self.request.cookies.get("id")
 #            if currentUser:
@@ -242,20 +208,32 @@ class ImageHandler(Handler):
 #                checkUser = check_id_hash(list[1])
 #                if currentUser == checkUser:
 #                    self.redirect("/%d" % (int(list[1])))
+
+
+class VerifyUser(Handler):
+    def get(self):
+        phonenumber = self.request.get("phonenumber")
+        password = self.request.get("password")
+        status, user = Utilities.check_user(self,phonenumber,password)
+        if status:
+            hash_id = make_id_hash(int(user.key().id()))
+            set_cookie(self, 'id', hash_id)
+            set_cookie(self, "detector", user.key())
+            self.write('verification success')
+#            logging.info('user is valid')
+        else:
+#            logging.info('user is not valid')
+            self.write('verification failed')
         
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/logout', SignupHandler),
     ('/signup', SignupHandler),
-<<<<<<< HEAD
     ('/passenger', PassengerHandler),
     ('/driver', DriverHandler),
     ('/home', DriverHome),
-    ('/img', ImageHandler)
-=======
-    ('/passenger' , PassengerHandler),
-    ('/driver', DriverHandler),
-    ('/verify', Verification)
->>>>>>> 62953985a14773f5b408e59d01f142f1d20e7398
+    ('/img', ImageHandler),
+    ('/verifyuser', VerifyUser)
+    #('/verify', Verification)
 ], debug=True)
