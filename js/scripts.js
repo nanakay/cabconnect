@@ -1,20 +1,12 @@
-$(document).ready(function() {
-	$('.dropdown-toggle').dropdown();
-});
 
-$(document).ready(function() {
-	$('label.tree-toggler').click(function() {
-		$(this).parent().children('ul.tree').toggle(300);
-	});
-});
-function initialize() {
+function init() {
 
 //  var input = /** @type {HTMLInputElement} */(document.getElementById('searchTextField'));
 //  var autocomplete = new google.maps.places.Autocomplete(input);
 
  // autocomplete.bindTo('bounds', map);
-	var input = document.getElementById('searchTextField');
-	var input2 = document.getElementById('TextField');
+	var input = document.getElementById('request_location');
+	var input2 = document.getElementById('request_destination');
 	
 	var options = {
 	componentRestrictions: {country: 'gh'}
@@ -64,14 +56,14 @@ function initialize() {
     	if (status == google.maps.GeocoderStatus.OK) {
     		if (results[0]) {
     			input.value = results[1].formatted_address;
-    			window.console.log(results[0].formatted_address + " " + myPosition);
+    			window.console.log(results[0] + " " + myPosition);
     			}
     		else {
     			window.console.log("nothing found");
     		}
     	}
     	else {
-    		window.console.log("nothing found for " + center + " " + status);
+    		window.console.log("nothing found for " + myPosition + " " + status);
     	}
     });
     

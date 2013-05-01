@@ -28,8 +28,9 @@ body{
 
 .alert{
     max-width: 80%;
-    display: none;
+    display: None;
 }
+
 
 a{
     color: orange;

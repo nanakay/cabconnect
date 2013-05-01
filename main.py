@@ -3,6 +3,7 @@ import jinja2
 import re
 import hashlib
 import logging
+import json
 
 from google.appengine.api import images
 
@@ -61,12 +62,11 @@ class Handler(webapp2.RequestHandler):
 
 class MainHandler(Handler):
     def get(self):
-#        self.redirect('/signup?state=%s')
         self.redirect('/signup')
 
 class SignupHandler(Handler):
     def get(self):
-        self.render("new.html", error="")
+        self.render("index.html", error="")
 
     def post(self):
         action = self.request.get("action")
@@ -208,23 +208,83 @@ class ImageHandler(Handler):
 #                checkUser = check_id_hash(list[1])
 #                if currentUser == checkUser:
 #                    self.redirect("/%d" % (int(list[1])))
-
+def to_json(query_obj):
+    result = []
+    for entry in query_obj:
+        result.append(dict([(p, unicode(getattr(entry, p))) for p in entry.properties()]))
+    return result
 
 class VerifyUser(Handler):
     def get(self):
         phonenumber = self.request.get("phonenumber")
         password = self.request.get("password")
-        status, user = Utilities.check_user(self,phonenumber,password)
+        status, user = Utilities.check_user(self, phonenumber, password)
         if status:
             hash_id = make_id_hash(int(user.key().id()))
             set_cookie(self, 'id', hash_id)
             set_cookie(self, "detector", user.key())
-            self.write('verification success')
+#            user_json = to_json(user)
+#            self.response.headers['Content-Type'] = 'application/json'
+#            user_j = json.encode(user)
+            self.write(user.first_name)
+#            self.write(simplejson.dumps(user_json))
+#            self.write((json.dumps(db.to_dict(user))))
+#            self.write('verification success')
 #            logging.info('user is valid')
         else:
 #            logging.info('user is not valid')
-            self.write('verification failed')
+            self.write('Verification failed')
         
+class CreateUser(Handler):
+    def get(self):
+        phone_number = self.request.get("phone_number")
+        password = self.request.get("password")
+        email = self.request.get("email")
+        first_name = self.request.get("first_name")
+        last_name = self.request.get("last_name")
+        
+        status, user = Passenger.create_passenger(first_name, last_name, phone_number, password, email)
+        
+        if status:
+            self.write("Signup failed, Phone number " + phone_number + " is already in use")
+        else:
+#            self.write(phone_number + "," + password + "," + email)
+            hash_id = make_id_hash(int(user.key().id()))
+            set_cookie(self, 'id', hash_id)
+            set_cookie(self, "detector", user.key())
+            self.write(user.first_name)
+            
+class Request(Handler):
+    def get(self):
+        phone_number = self.request.get("phone_number")
+        passenger = Passenger.gql("WHERE phone_number = :1", phone_number).get()
+        
+        current_location = self.request.get("current_location")
+        destination = self.request.get("destination")
+        pickup_time = self.request.get("time")
+        timeframe = self.request.get("timeframe")
+        other_info = self.request.get("other_info")
+        
+        request = Passenger_Request(passenger = passenger, current_location = current_location, destination = destination, 
+                                    pickup_time = pickup_time, timeframe = timeframe, other_info = other_info)
+        if request:
+            request.put()
+            self.write("successful")
+        else:
+            self.write("request failed")
+        
+class AdminHandler():
+    def get(self):
+        self.render("dispatch.html")
+        
+    def post(self):
+        first_name = self.request.get("first_name")
+        last_name = self.request.get("last_name")
+        password = self.request.get("password")
+        
+        if firstname and last_name and password:
+            admin = Admin(first_name = first_name, last_name = last_name, password = password)
+            admin.put()
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -234,6 +294,8 @@ app = webapp2.WSGIApplication([
     ('/driver', DriverHandler),
     ('/home', DriverHome),
     ('/img', ImageHandler),
-    ('/verifyuser', VerifyUser)
-    #('/verify', Verification)
+    ('/verifyuser', VerifyUser),
+    ('/createuser', CreateUser),
+    ('/request', Request),
+    ('/admin', AdminHandler)
 ], debug=True)

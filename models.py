@@ -64,7 +64,7 @@ class Passenger(db.Model):
     salt = db.StringProperty()
 
     @classmethod
-    def create_passenger(cls, email, first_name,last_name, phone_number, password):
+    def create_passenger(cls, first_name, last_name, phone_number, password, email):
         passengerExists = Passenger.all()
         passengerExists = passengerExists.filter('phone_number =', phone_number)
         find = passengerExists.get()
@@ -72,7 +72,7 @@ class Passenger(db.Model):
             return True, find
         else:
             password, salt= Utilities.make_pw_hash(password)
-            newPassenger = Passenger(first_name = first_name, last_name = last_name,email=email, password=password, phone_number=phone_number,salt=salt)
+            newPassenger = Passenger(first_name = first_name, last_name = last_name, password=password, phone_number=phone_number, email=email, salt=salt)
             newPassenger.picture = db.Blob(urlfetch.Fetch("https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yo/r/UlIqmHJn-SK.gif").content)
             newPassenger.put()
             return False, newPassenger
@@ -92,15 +92,7 @@ class Passenger(db.Model):
 #        else:
 #            return False, found
 
-class Passenger_Request(db.Model): #Might not be useful, still thinking through it
-    passenger = db.ReferenceProperty(Passenger)
-    current_location = db.StringProperty(required = True)
-    current_location_latlng = db.StringProperty()
-    destination = db.StringProperty(required = True)
-    price_offer = db.StringProperty()
-    other_info = db.TextProperty()
-    created = db.DateTimeProperty(auto_now_add = True)
-    processed = db.BooleanProperty(default = False)
+
     
 class Driver(db.Model):
     first_name = db.StringProperty(required = True)
@@ -129,6 +121,18 @@ class Driver(db.Model):
             newDriver.put()
         return False, newDriver
 
+class Passenger_Request(db.Model): #Might not be useful, still thinking through it
+    passenger = db.ReferenceProperty(Passenger)
+    current_location = db.StringProperty(required = True)
+    current_location_latlng = db.StringProperty()
+    destination = db.StringProperty(required = True)
+    other_info = db.TextProperty()
+    assigned_driver = db.ReferenceProperty(Driver)
+    created = db.DateTimeProperty(auto_now_add = True)
+    pickup_time = db.StringProperty(required = True)
+    timeframe = db.StringProperty()
+    processed = db.BooleanProperty(default = False)
+
 class Connected(db.Model):
     passenger = db.ReferenceProperty(Passenger)
     driver = db.ReferenceProperty(Driver)
@@ -146,3 +150,10 @@ class Driver_Request(db.Model):
 
 class PhoneNumber(db.Model):
     phone_number = db.PhoneNumberProperty(required=True)
+    
+class Admin(db.Model):
+    first_name = db.StringProperty(required = True)
+    last_name = db.StringProperty(required = True)
+    password = db.StringProperty(required = True)
+    email = db.StringProperty(required = True)
+    picture = db.BlobProperty()
