@@ -166,12 +166,9 @@ function requestCab() {
 	        if (xhttp.readyState == 4 && xhttp.status == 200) {
 	//        	alert(xhttp.readyState + " " + xhttp.status)
 	            var resp = xhttp.responseText;
-	            
 	            if (resp === "successful") {
-	            	alert(resp);
 	                var current_url = window.location.href;
 	                var passenger_url = current_url.substring(0, current_url.lastIndexOf("#"))+ "#request-confirmation";
-	                alert(passenger_url);
 	                window.location.href = passenger_url;
 	            }
 	            else {
@@ -197,6 +194,92 @@ function requestCab() {
         error_el.style.display = "block";
     }
 }
+
+function addDriver () {
+	first_name = getById("driver_first_name").value;
+	last_name = getById("driver_last_name").value;
+	password = getById("driver_password").value;
+	email = getById("driver_p_number").value;
+	
+//	alert(first_name + " " + last_name + " " + password + " " + email);
+	
+	if (first_name && last_name && password && email) {
+		xhttp.onreadystatechange = function() {
+	        if (xhttp.readyState == 4 && xhttp.status == 200) {
+	            var resp = xhttp.responseText;
+	            if (resp.indexOf("successfully") != -1) {
+	                var current_url = window.location.href;
+	                var passenger_url = current_url.substring(0, current_url.lastIndexOf("&"));
+//	                var passeger_url = current_url + "#driver_confirmation";
+	                
+	                window.location.href = passenger_url;
+	                
+	            }
+	            else {
+	                var error = "Sorry, You cannot create two accounts with the same number";
+	                var error_el = getById("driver_error");
+	                error_el.innerHTML = error;
+	                error_el.style.display = "block"
+	            }
+	            
+	        }
+    	}
+        var url = '/admin?option=add_driver' + "&driver_first_name=" + first_name + '&driver_last_name=' + last_name + "&driver_password=" + password + "&driver_p_number=" + email;
+        xhttp.open('POST', url, true);
+        xhttp.send();
+	} 
+	else {
+		var error = "Please provide all details";
+        var error_el = getById("driver_error");
+        error_el.innerHTML = error;
+        error_el.style.display = "block"
+	}
+}
+
+function assignDriver() {
+	driver = getById("assigned_driver").value;
+	name_array = driver.split(" "); 
+	
+	var first_name = name_array[0];
+	var last_name = name_array[1];
+	var message = getById("acceptance_note").value;
+	var key = getById("request_key").value;
+	
+	if (first_name && last_name && message && key) {
+		xhttp.onreadystatechange = function() {
+	        if (xhttp.readyState == 4 && xhttp.status == 200) {
+	            var resp = xhttp.responseText;
+	            if (resp.indexOf("successful") != -1) {
+	                var current_url = window.location.href;
+	                var passenger_url = current_url.substring(0, current_url.lastIndexOf("&"));
+//	                var passeger_url = current_url + "#driver_confirmation";
+	                window.location.href = passenger_url;
+	                location.reload();
+	            }
+	            else {
+	                var error = "Sorry, process could not finish";
+	                var error_el = getById("driver_error");
+	                error_el.innerHTML = error;
+	                error_el.style.display = "block"
+	            }
+	            
+	        }
+    	}
+        var url = '/admin?option=assign_driver' + "&driver_first_name=" + first_name + '&driver_last_name=' + last_name + "&message=" + message + "&request_key=" + key;
+        xhttp.open('POST', url, true);
+        xhttp.send();
+	} 
+	else {
+		var error = "Please additional information will help the client";
+        var error_el = getById("assign_error");
+        error_el.innerHTML = error;
+        error_el.style.display = "block"
+	}
+}
+
+
+
+
 
 
 

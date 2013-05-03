@@ -7,3 +7,7 @@
 #success {
 	margin-top: 48%;
 }
+
+a:hover, a:active {
+	text-decoration: none;
+}

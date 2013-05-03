@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <meta name="viewport" content="width=320, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>Minimal AppLaud App</title>
      <link rel="stylesheet" href="/js/jquery.mobile-1.3.1.min.css" />
@@ -31,7 +31,7 @@
 		<header data-role="header">
 		<h1>ACS Mobile App</h1>	
 		</header>
-		<div><img src="img/ACS_LOGO.png" style="height:100%; width:100%;"></div>
+		<div><img src="img/ACS_LOGO.png" style="height:60%; width:100%;"></div>
 			<div data-role="content">
 				<ul data-role="listveiw" data-inset="true">
 					<h1 >
@@ -52,7 +52,7 @@
 		
 		<input id = "phone_number" type = "hidden" >
 		<input id = "firstName" type = "hidden" >
-		<div data-role="footer">
+		<div data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>
 		</div>
 	</section>
@@ -64,7 +64,7 @@
 		</div>
 		<div style = "color:red" id = "error" class="alert alert-error"></div>
 		<div data-role="content">
-			<form method="post" name="signup">
+			<form method="post" name="signup" enctype="multipart/form-data">
 				<input id = "signup_fName" type="text" placeholder="First Name"></input>
 				<input id = "signup_lName" type="text" placeholder="Last Name"></input>
 				<input id = "signup_phoneNumber" type="text" placeholder="phone number"></input>
@@ -78,7 +78,7 @@
 				<a href="#login" data-role="button" data-transition="slide" data-theme="a">Log In</a>
 			</div>
 		</div>
-		<div data-role="footer">
+		<div data-role="footer" data-position = "fixed">
 		<h3>&copy 2013 Accra Cab Services</h3>
 		</div>
 	</div>
@@ -97,7 +97,7 @@
 					<a href="#start_page" data-role="button" data-transition="slide" data-theme="b">Sign Up</a>
 				</form>
 			</div>
-			<footer data-role="footer">
+			<footer data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>
 			</footer>
 		</div>
@@ -123,7 +123,7 @@
 					<a href="#signup" data-role="button" data-theme="a">signup</a>
 				</div>
 			</div>	
-			<footer data-role="footer">
+			<footer data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>
 			</footer>
 		</div>
@@ -150,7 +150,7 @@
 					</ul>
 				</div>
 			</div>	
-			<footer data-role="footer">
+			<footer data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>	
 			</footer>
 		</div>
@@ -218,7 +218,7 @@
 			</div>
 
 			</div>
-			<footer data-role="footer">
+			<footer data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3></footer>
 		</div>
 
@@ -238,7 +238,7 @@
 					</li>
 				</ul>
 			</div>
-			<footer data-role="footer">
+			<footer data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>	
 			</footer>
 		</div>
@@ -269,7 +269,7 @@
 					</fieldset>
 				</form>
 			</div>
-			<footer data-role="footer">
+			<footer data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>	
 			</footer>
 		</div>	
@@ -282,7 +282,7 @@
 					<p style="text-align:center">We deeply appreciate your feedback.<br>Thank you.</p>
 				</div>
 			</div>
-			<footer data-role="footer">
+			<footer data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>	
 			</footer>
 		</div>
@@ -294,7 +294,7 @@
 					<p style="text-align:center">Your Request has been received. It is receiving immediate attention. We will get back to you in a minute.<br>Thank you.</p>
 				</div>
 			</div>
-			<footer data-role="footer">
+			<footer data-role="footer" data-position = "fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>
 			</footer>
 		</div>
@@ -309,7 +309,7 @@
 			</ul>	
 			</nav>	
 			</header>
-			<div data-role="content"></div>
+			<div data-role="content" data-position = "fixed"></div>
 			<footer data-role="footer">
 			<h3>&copy 2013 Accra Cab Services</h3>
 			</footer>

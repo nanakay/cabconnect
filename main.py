@@ -10,7 +10,7 @@ from google.appengine.api import images
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.api import images
-from models import Utilities,Passenger, Driver, Passenger_Request, Connected, Driver_Request
+from models import Utilities,Passenger, Driver, Passenger_Request, Connected, Driver_Request, Admin
 
 template_dir = "templates"
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),autoescape = True)
@@ -273,18 +273,54 @@ class Request(Handler):
         else:
             self.write("request failed")
         
-class AdminHandler():
+class AdminHandler(Handler):
     def get(self):
-        self.render("dispatch.html")
+        available_drivers = Driver.gql("WHERE available = True")
+        pending_requests = Passenger_Request.gql("WHERE status = :1", "Pending")
+        self.render("dispatch.html", pending_requests = pending_requests, available_drivers = available_drivers)
         
     def post(self):
-        first_name = self.request.get("first_name")
-        last_name = self.request.get("last_name")
-        password = self.request.get("password")
+        option = self.request.get("option")
         
-        if firstname and last_name and password:
-            admin = Admin(first_name = first_name, last_name = last_name, password = password)
-            admin.put()
+        if option == "add_driver":
+            first_name = self.request.get("driver_first_name")
+            last_name = self.request.get("driver_last_name")
+            password = self.request.get("driver_password")
+            phone_number = self.request.get("driver_p_number")
+            
+            status, user = Driver.create_driver(first_name,last_name, phone_number, password)
+
+            if status:
+                self.write('You cannot create two accounts with the same number')
+            else:
+                hash_id = make_id_hash(int(user.key().id()))
+                self.write(" Driver added successfully")
+        elif option == "assign_driver":
+            first_name = self.request.get("driver_first_name")
+            last_name = self.request.get("driver_last_name")
+            message = self.request.get("message")
+            key = self.request.get("request_key")
+            
+#             driver = Driver.gql("WHERE first_name = :1 AND last_name = :2", (first_name, last_name)).get()
+            driver = db.GqlQuery("SELECT * FROM Driver WHERE first_name=:1 AND last_name=:2", first_name, last_name).get()
+            driver.available = False
+            driver.put()
+#             
+            request = db.get(key)
+            logging.info(request)
+            request.status = "Active"
+            request.assigned_driver = driver
+            request.put()
+#             
+            self.write("successful")
+#            first_name = self.request.get("first_name")
+#            last_name = self.request.get("last_name")
+#            password = self.request.get("password")
+#            email = self.request.get("email")
+#        if first_name and last_name and password:
+#            admin = Admin(first_name = first_name, last_name = last_name, password = password)
+#            admin.put()
+        
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

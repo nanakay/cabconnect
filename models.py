@@ -99,13 +99,8 @@ class Driver(db.Model):
     last_name = db.StringProperty(required = True)
     phone_number = db.StringProperty(required = True)
     password = db.StringProperty(required=True)
-    additional_number = db.StringProperty()
-    car_number = db.StringProperty()
-    car_description = db.StringProperty()
     picture = db.BlobProperty()
-    station = db.StringProperty()
-    online = db.BooleanProperty()
-    verify= db.StringProperty()
+    available = db.BooleanProperty(default = True)
     salt = db.StringProperty()
 
     @classmethod
@@ -118,6 +113,7 @@ class Driver(db.Model):
         else:
             password, salt= Utilities.make_pw_hash(password)
             newDriver= Driver(first_name = first_name, last_name = last_name, password=password, phone_number=phone_number,salt=salt)
+            newDriver.picture = db.Blob(urlfetch.Fetch("https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yo/r/UlIqmHJn-SK.gif").content)
             newDriver.put()
         return False, newDriver
 
@@ -131,7 +127,7 @@ class Passenger_Request(db.Model): #Might not be useful, still thinking through 
     created = db.DateTimeProperty(auto_now_add = True)
     pickup_time = db.StringProperty(required = True)
     timeframe = db.StringProperty()
-    processed = db.BooleanProperty(default = False)
+    status = db.StringProperty(default = "Pending")
 
 class Connected(db.Model):
     passenger = db.ReferenceProperty(Passenger)
