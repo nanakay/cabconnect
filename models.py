@@ -128,6 +128,18 @@ class Passenger_Request(db.Model): #Might not be useful, still thinking through 
     pickup_time = db.StringProperty(required = True)
     timeframe = db.StringProperty()
     status = db.StringProperty(default = "Pending")
+    
+class Passenger_Reserve(db.Model):
+    passenger = db.ReferenceProperty(Passenger)
+    location = db.StringProperty(required = True)
+    destination = db.StringProperty(required = True)
+    other_info = db.TextProperty()
+    assigned_driver = db.ReferenceProperty(Driver)
+    created = db.DateTimeProperty(auto_now_add = True)
+    pickup_time = db.StringProperty(required = True)
+    to_time = db.StringProperty()
+    status = db.StringProperty(default = "Pending")
+    
 
 class Connected(db.Model):
     passenger = db.ReferenceProperty(Passenger)
@@ -144,9 +156,6 @@ class Driver_Request(db.Model):
     current_location = db.StringProperty(required = True)
     current_location_latlng = db.StringProperty()
 
-class PhoneNumber(db.Model):
-    phone_number = db.PhoneNumberProperty(required=True)
-    
 class Admin(db.Model):
     first_name = db.StringProperty(required = True)
     last_name = db.StringProperty(required = True)

@@ -10,7 +10,7 @@ from google.appengine.api import images
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.api import images
-from models import Utilities,Passenger, Driver, Passenger_Request, Connected, Driver_Request, Admin
+from models import *
 
 template_dir = "templates"
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),autoescape = True)
@@ -256,23 +256,47 @@ class CreateUser(Handler):
             
 class Request(Handler):
     def get(self):
-        phone_number = self.request.get("phone_number")
-        passenger = Passenger.gql("WHERE phone_number = :1", phone_number).get()
-        
-        current_location = self.request.get("current_location")
-        destination = self.request.get("destination")
-        pickup_time = self.request.get("time")
-        timeframe = self.request.get("timeframe")
-        other_info = self.request.get("other_info")
-        
-        request = Passenger_Request(passenger = passenger, current_location = current_location, destination = destination, 
-                                    pickup_time = pickup_time, timeframe = timeframe, other_info = other_info)
-        if request:
-            request.put()
-            self.write("successful")
-        else:
-            self.write("request failed")
-        
+        option = self.request.get("option")
+        if option == "request_cab":
+            phone_number = self.request.get("phone_number")
+            passenger = Passenger.gql("WHERE phone_number = :1", phone_number).get()
+            
+            current_location = self.request.get("current_location")
+            destination = self.request.get("destination")
+            pickup_time = self.request.get("time")
+            timeframe = self.request.get("timeframe")
+            other_info = self.request.get("other_info")
+            
+            request = Passenger_Request(passenger = passenger, current_location = current_location, destination = destination, 
+                                        pickup_time = pickup_time, timeframe = timeframe, other_info = other_info)
+            if request:
+                request.put()
+                self.write("successful")
+            else:
+                self.write("request failed")
+        elif option == "reserve_cab":
+            phone_number = self.request.get("phone_number")
+            passenger = Passenger.gql("WHERE phone_number = :1", phone_number).get()
+            
+            location = self.request.get("current_location")
+            destination = self.request.get("destination")
+            from_date = self.request.get("from_date")
+            to_date = self.request.get("to_date")
+            pickup_time = self.request.get("reserve_pickup_time")
+            to_time = self.request.get("to_time")
+            total_passengers = self.request.get("total_passengers")
+            other_info = self.request.get("reserve_other_info")
+            
+            if passenger and current_location and destination and from_date and to_date and pickup_time and to_time:
+#                 check = Passenger_Reserve.verifyReserve()
+                reserve = Passenger_Reserve(passenger = passenger, location = location, destination = destination, from_date = from_date, to_date = to_date,
+                        pickup_time = pickup_time, to_time = to_time, total_passenger = total_passengers, other_info = other_info)
+                reserve.put()
+                self.write("successful")
+            else:
+                self.write("reserve failed")
+                  
+            
 class AdminHandler(Handler):
     def get(self):
         available_drivers = Driver.gql("WHERE available = True")
