@@ -4,8 +4,11 @@ import re
 import hashlib
 import logging
 import json
-
-from google.appengine.api import images
+from datetime import datetime
+import random
+import urllib2
+import string
+import urllib
 
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
@@ -66,7 +69,7 @@ class MainHandler(Handler):
 
 class SignupHandler(Handler):
     def get(self):
-        self.render("index.html", error="")
+        self.render("dispatch.html", error="")
 
     def post(self):
         action = self.request.get("action")
@@ -215,7 +218,7 @@ def to_json(query_obj):
     return result
 
 class VerifyUser(Handler):
-    def get(self):
+    def post(self):
         phonenumber = self.request.get("phonenumber")
         password = self.request.get("password")
         status, user = Utilities.check_user(self, phonenumber, password)
@@ -223,39 +226,61 @@ class VerifyUser(Handler):
             hash_id = make_id_hash(int(user.key().id()))
             set_cookie(self, 'id', hash_id)
             set_cookie(self, "detector", user.key())
-#            user_json = to_json(user)
-#            self.response.headers['Content-Type'] = 'application/json'
-#            user_j = json.encode(user)
+
             self.write(user.first_name)
-#            self.write(simplejson.dumps(user_json))
-#            self.write((json.dumps(db.to_dict(user))))
-#            self.write('verification success')
-#            logging.info('user is valid')
         else:
-#            logging.info('user is not valid')
             self.write('Verification failed')
+            
+def make_code():
+    return ''.join(random.choice(string.letters) for x in xrange(5))
         
 class CreateUser(Handler):
-    def get(self):
+    def post(self):
+        option = self.request.get("option")
+        
         phone_number = self.request.get("phone_number")
-        password = self.request.get("password")
-        email = self.request.get("email")
-        first_name = self.request.get("first_name")
-        last_name = self.request.get("last_name")
-        
-        status, user = Passenger.create_passenger(first_name, last_name, phone_number, password, email)
-        
-        if status:
-            self.write("Signup failed, Phone number " + phone_number + " is already in use")
-        else:
-#            self.write(phone_number + "," + password + "," + email)
-            hash_id = make_id_hash(int(user.key().id()))
-            set_cookie(self, 'id', hash_id)
-            set_cookie(self, "detector", user.key())
-            self.write(user.first_name)
+        if option == "create_user":
+            password = self.request.get("password")
+            email = self.request.get("email")
+            first_name = self.request.get("first_name")
+            last_name = self.request.get("last_name")
+            
+            status, user = Passenger.create_passenger(first_name, last_name, phone_number, password, email)
+            
+            if status:
+                self.write("Signup failed, Phone number " + phone_number + " is already in use")
+            else:
+    #            self.write(phone_number + "," + password + "," + email)
+                hash_id = make_id_hash(int(user.key().id()))
+                set_cookie(self, 'id', hash_id)
+                set_cookie(self, "detector", user.key())
+                self.write(user.first_name)
+        elif option == "verify_number":
+            #logging.info("sent phone number")
+            code = make_code()
+            
+            message = urllib.quote(u"Hi, your number verification code is " + code + ". Please enter this to complete signup.".encode("utf-8"))
+            name = urllib.quote(u"Cab Konekt".encode("utf-8"))
+            
+ #           action = urlfetch.Fetch("http://infoline.nandiclient.com/" + name + "/campaigns/sendCampaign/cabkonekt/cabkonekt/233249851596/"+message + "/" + name + "", validate_certificate = False)
+            request = urllib2.Request("http://infoline.nandiclient.com/" + name + "/campaigns/sendCampaign/cabkonekt/cabkonekt/233249851596/"+ message +"/")
+# #            request = urllib2.Request("google.com.gh")
+            action = urllib2.urlopen(request)
+#             logging.info("action")
+            output = action.read()
+            logging.info("This is the output: " + output)
+            self.write(output)
+            
+def create_date_object(date):
+    the_date = datetime.strptime(date, "%Y-%m-%d")
+    return the_date
+
+def create_time_object(time):
+    the_time = datetime.strptime(time, "%H:%M")
+    return the_time
             
 class Request(Handler):
-    def get(self):
+    def post(self):
         option = self.request.get("option")
         if option == "request_cab":
             phone_number = self.request.get("phone_number")
@@ -263,12 +288,12 @@ class Request(Handler):
             
             current_location = self.request.get("current_location")
             destination = self.request.get("destination")
-            pickup_time = self.request.get("time")
-            timeframe = self.request.get("timeframe")
+            time = self.request.get("time")
+            pickup_time = create_time_object(time)
             other_info = self.request.get("other_info")
             
             request = Passenger_Request(passenger = passenger, current_location = current_location, destination = destination, 
-                                        pickup_time = pickup_time, timeframe = timeframe, other_info = other_info)
+                                        pickup_time = pickup_time, other_info = other_info)
             if request:
                 request.put()
                 self.write("successful")
@@ -280,28 +305,38 @@ class Request(Handler):
             
             location = self.request.get("current_location")
             destination = self.request.get("destination")
-            from_date = self.request.get("from_date")
-            to_date = self.request.get("to_date")
-            pickup_time = self.request.get("reserve_pickup_time")
-            to_time = self.request.get("to_time")
+            
+            date = self.request.get("from_date")
+            from_date = create_date_object(date)
+            
+            another_date = self.request.get("to_date")
+            to_date = create_date_object(another_date)
+            
+            time = self.request.get("reserve_pickup_time")
+            pickup_time = create_time_object(time)
+            
+            another_time = self.request.get("to_time")
+            to_time = create_time_object(another_time)
+            
             total_passengers = self.request.get("total_passengers")
             other_info = self.request.get("reserve_other_info")
             
-            if passenger and current_location and destination and from_date and to_date and pickup_time and to_time:
-#                 check = Passenger_Reserve.verifyReserve()
-                reserve = Passenger_Reserve(passenger = passenger, location = location, destination = destination, from_date = from_date, to_date = to_date,
-                        pickup_time = pickup_time, to_time = to_time, total_passenger = total_passengers, other_info = other_info)
-                reserve.put()
-                self.write("successful")
-            else:
-                self.write("reserve failed")
+            reserve = Passenger_Reserve(passenger = passenger, location = location, destination = destination, from_date = from_date, to_date = to_date,
+                pickup_time = pickup_time, to_time = to_time, total_passengers = total_passengers, other_info = other_info)
+            
+            reserve.put()
+            self.write("successful")
                   
             
 class AdminHandler(Handler):
     def get(self):
-        available_drivers = Driver.gql("WHERE available = True")
+        pending_reserves = Passenger_Reserve.gql("WHERE status = :1", "Pending")
         pending_requests = Passenger_Request.gql("WHERE status = :1", "Pending")
-        self.render("dispatch.html", pending_requests = pending_requests, available_drivers = available_drivers)
+        
+        feedbacks = Feedback.gql("ORDER BY created ASC")
+        available_drivers = Driver.gql("WHERE available = True")
+        
+        self.render("dispatch.html", pending_requests = pending_requests, available_drivers = available_drivers, feedbacks = feedbacks, pending_reserves = pending_reserves)
         
     def post(self):
         option = self.request.get("option")
@@ -344,7 +379,66 @@ class AdminHandler(Handler):
 #        if first_name and last_name and password:
 #            admin = Admin(first_name = first_name, last_name = last_name, password = password)
 #            admin.put()
+
+def get_date(date_object):
+    day = date_object.day
+    month = date_object.month
+    year = date_object.year
+    
+#     date = str(day) + " " + str(month) + " " + str(year)
+    date = date_object.strftime("%d %b, %Y")
+    return date
+ 
+def history_toJson(requests, reserves):
+    history = []
+    history_obj = {}
+    for request in requests:
+        history_obj['driver'] = request.assigned_driver.first_name + " " + request.assigned_driver.last_name
+        history_obj['request_date'] = get_date(request.created)
+        history_obj['request_location'] = request.current_location
+        history_obj['request_destination'] = request.destination
+        history.append(history_obj)
         
+    for reserve in reserves:
+        history_obj['driver'] = reserve.assigned_driver.first_name + " " + reserve.assigned_driver.last_name
+        history_obj['date'] = reserve.date
+        history_obj['reserve_date'] = get_date(reserve.from_date)
+        history_obj['to_date'] = get_date(reserve.to_date)
+        history_obj['location'] = reserve.location
+        history_obj['destination'] = reserve.destination
+        history.append(history_obj)
+        
+    history_json = json.dumps(history)
+    return history_json
+        
+class HistoryHandler(Handler):
+    def get(self):
+        phone_number = self.request.get("phone_number")
+        passenger = Passenger.gql("WHERE phone_number = :1", phone_number).get()
+        
+        requests = Passenger_Request.gql("WHERE passenger = :1", passenger)
+        reserves = Passenger_Reserve.gql("WHERE passenger = :1", passenger)
+        
+        history = history_toJson(requests, reserves)
+        
+        self.write(history)
+        
+class FeedbackHandler(Handler):
+    def post(self):
+        phone_number = self.request.get("phone_number")
+        passenger = Passenger.gql("WHERE phone_number = :1", phone_number).get()
+        
+        price_rating = self.request.get("price_rating")
+        punctuality_rating = self.request.get("punctuality_rating")
+        security_rating = self.request.get("security_rating")
+        care_rating = self.request.get("care_rating")
+        standard_rating = self.request.get("standard_rating")
+        message = self.request.get("message")
+        
+        feedback = Feedback(passenger = passenger, price_rating = price_rating, punctuality_rating = punctuality_rating, security_rating = security_rating, care_rating = care_rating, standard_rating = standard_rating, message = message)
+        feedback.put()
+        
+        self.write("successful")
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -357,5 +451,7 @@ app = webapp2.WSGIApplication([
     ('/verifyuser', VerifyUser),
     ('/createuser', CreateUser),
     ('/request', Request),
-    ('/admin', AdminHandler)
+    ('/admin', AdminHandler),
+    ('/history', HistoryHandler),
+    ('/feedback', FeedbackHandler)
 ], debug=True)

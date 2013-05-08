@@ -28,11 +28,7 @@ body {
     font-family: 'SegoeUI', arial, sans-serif;
     color: #aeaeae;
     background: #fff;
-}
-
-.alert {
-	color: red;
-	display: none;
+    min-width:480px;
 }
 
 a { color: #0252aa; text-decoration: none; cursor: pointer; }

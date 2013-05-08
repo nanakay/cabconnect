@@ -62,7 +62,8 @@ class Passenger(db.Model):
     email = db.EmailProperty()
     picture = db.BlobProperty()
     salt = db.StringProperty()
-
+    created = db.DateTimeProperty(auto_now_add = True)
+    
     @classmethod
     def create_passenger(cls, first_name, last_name, phone_number, password, email):
         passengerExists = Passenger.all()
@@ -102,6 +103,7 @@ class Driver(db.Model):
     picture = db.BlobProperty()
     available = db.BooleanProperty(default = True)
     salt = db.StringProperty()
+    created = db.DateTimeProperty(auto_now_add = True)
 
     @classmethod
     def create_driver(cls,first_name,last_name, phone_number, password):
@@ -125,8 +127,7 @@ class Passenger_Request(db.Model): #Might not be useful, still thinking through 
     other_info = db.TextProperty()
     assigned_driver = db.ReferenceProperty(Driver)
     created = db.DateTimeProperty(auto_now_add = True)
-    pickup_time = db.StringProperty(required = True)
-    timeframe = db.StringProperty()
+    pickup_time = db.DateTimeProperty(required = True)
     status = db.StringProperty(default = "Pending")
     
 class Passenger_Reserve(db.Model):
@@ -135,10 +136,13 @@ class Passenger_Reserve(db.Model):
     destination = db.StringProperty(required = True)
     other_info = db.TextProperty()
     assigned_driver = db.ReferenceProperty(Driver)
+    from_date = db.DateTimeProperty(required = True)
+    to_date = db.DateTimeProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
-    pickup_time = db.StringProperty(required = True)
-    to_time = db.StringProperty()
+    pickup_time = db.DateTimeProperty(required = True)
+    to_time = db.DateTimeProperty()
     status = db.StringProperty(default = "Pending")
+    total_passengers = db.StringProperty()
     
 
 class Connected(db.Model):
@@ -162,3 +166,14 @@ class Admin(db.Model):
     password = db.StringProperty(required = True)
     email = db.StringProperty(required = True)
     picture = db.BlobProperty()
+    
+class Feedback(db.Model):
+    passenger = db.ReferenceProperty(Passenger)
+    price_rating = db.StringProperty()
+    punctuality_rating = db.StringProperty()
+    security_rating = db.StringProperty()
+    care_rating = db.StringProperty()
+    standard_rating = db.StringProperty()
+    message = db.TextProperty()
+    created = db.DateTimeProperty(auto_now_add = True)
+ 

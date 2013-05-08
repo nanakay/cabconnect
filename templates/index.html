@@ -1,19 +1,17 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>Minimal AppLaud App</title>
-     <link rel="stylesheet" href="/js/jquery.mobile-1.3.1.min.css" />
-	<link rel = "stylesheet" type = "text/css" href = "/css/style.css">
-	<script src="/js/jquery-1.9.1.min.js"></script>
-	<script src="/js/jquery.mobile-1.3.1.min.js"></script>
-	<script src = "/js/user.js"></script>
-	<script src = "/js/helpful.js"></script>
-	<script src = "/js/scripts.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
-	  
-	  <!--  <script type="text/javascript" charset="utf-8">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<title>Accra Cab Services</title>
+
+<link rel="stylesheet" href="/css/jquery.mobile-1.3.1.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" href="/css/jqm-datebox.min.css">
+<link rel="stylesheet" href="/css/jquery.rating.css">
+<!-- <script type="text/javascript" charset="utf-8" src="cordova-2.6.0.js"></script> -->
+
+<!--  <script type="text/javascript" charset="utf-8">
       
         var onDeviceReady = function() {
             document.getElementById("devready").innerHTML = "OnDeviceReady fired.";
@@ -24,35 +22,43 @@
         }   
 </script>  -->
 
-  </head>
-  <body onload="init(); initAll()" id="stage" class="theme">
-    <!-- Welcome -->
+</head>
+<body onload="init(); initAll()" id="stage" class="theme">
+	<!-- Welcome -->
 	<section data-role="page" id="welcome">
 		<header data-role="header">
-		<h1>ACS Mobile App</h1>	
+			<h1>ACS Mobile App</h1>
 		</header>
-		<div><img src="img/ACS_LOGO.png" style="height:60%; width:100%;"></div>
-			<div data-role="content">
-				<ul data-role="listveiw" data-inset="true">
-					<h1 >
-						<ul data-role="listview">
-							<li data-icon="false"><a href="" >Unique and Reliable!</a></li>
-						</ul>
-					</h1>
-					<fieldset>
-					<div class="ui-grid-a">	
-						<div class="ui-block-a"><a class = "start_btn" href="#signup" data-role="button" data-theme="b">signup</a></div>
-						<div class="ui-block-b"><a class = "start_btn" href="#login" data-role="button" data-theme="a">login</a></div>
-					</div>
-					</fieldset>
-				</ul>
-			</div>
-		</div> 
+		<div>
+			<img src="img/ACS_LOGO.png" style="height: 60%; width: 100%;">
 		</div>
-		
-		<input id = "phone_number" type = "hidden" >
-		<input id = "firstName" type = "hidden" >
-		<div data-role="footer" data-position = "fixed">
+		<div data-role="content">
+			<ul data-role="listveiw" data-inset="true">
+				<h1>
+					<ul data-role="listview">
+						<li data-icon="false"><a href="">Unique and Reliable!</a></li>
+					</ul>
+				</h1>
+				<fieldset>
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<a id = "start_signup" class="start_btn" href="" data-role="button"
+								data-theme="b" onclick = "signupNavigate()">signup</a>
+						</div>
+						<div class="ui-block-b">
+							<a id = "start_login" class="start_btn" href="" data-role="button"
+								data-theme="a" onclick = "loginNavigate()">login</a>
+						</div>
+					</div>
+				</fieldset>
+			</ul>
+		</div>
+		</div>
+		</div>
+
+		<input id="phone_number" type="hidden"> <input id="firstName"
+			type="hidden">
+		<div data-role="footer" data-position="fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>
 		</div>
 	</section>
@@ -60,260 +66,425 @@
 	<!-- signup -->
 	<div data-role="page" id="signup">
 		<div data-role="header" data-theme="b">
-			<h1>Sign Up</h1>	
+			<h1>Sign Up</h1>
 		</div>
-		<div style = "color:red" id = "error" class="alert alert-error"></div>
+		<div style="color: red" id="error" class="alert alert-error"></div>
 		<div data-role="content">
 			<form method="post" name="signup" enctype="multipart/form-data">
-				<input id = "signup_fName" type="text" placeholder="First Name"></input>
-				<input id = "signup_lName" type="text" placeholder="Last Name"></input>
-				<input id = "signup_phoneNumber" type="text" placeholder="phone number"></input>
-				<input id = "signup_password" type="password" placeholder="password"></input>
-				<input id = "verify_password" type="password" placeholder="verify password"></input>
-				<input id = "signup_email" type="text" placeholder="E-mail"></input>
-				<a id = "signup_btn" href="" data-role="button" data-transition="slide" data-theme="b">Sign Up</a>
+				<input id="signup_fName" type="text" placeholder="First Name"></input>
+				<input id="signup_lName" type="text" placeholder="Last Name"></input>
+				<input id="signup_phoneNumber" type="text"
+					placeholder="phone number"></input> <input id="signup_password"
+					type="password" placeholder="password"></input> <input
+					id="verify_password" type="password" placeholder="verify password"></input>
+				<input id="signup_email" type="text" placeholder="E-mail"></input> 
+				
+				<a id="signup_btn" href="" data-role="button" data-transition="slide"
+					data-theme="b">Sign Up</a>
 			</form>
 			<div>
-				<p style="text-align: center; ">Do you have an account already?<br>Please log in</p>
-				<a href="#login" data-role="button" data-transition="slide" data-theme="a">Log In</a>
+				<p style="text-align: center;">
+					Do you have an account already?<br>Please log in
+				</p>
+				<a href="#login" data-role="button" data-transition="slide"
+					data-theme="a">Log In</a>
 			</div>
 		</div>
-		<div data-role="footer" data-position = "fixed">
-		<h3>&copy 2013 Accra Cab Services</h3>
+		<div data-role="footer" data-position="fixed">
+			<h3>&copy 2013 Accra Cab Services</h3>
 		</div>
 	</div>
-	
+
 	<!-- user details -->
 	<div data-role="page" id="user-details">
-			<header data-role="header">
-				<h1>User Details</h1>
-			</header>
-			<div data-role="content">
-		
-				<form method="post" name="user-details">
-					<input name="phoneNumber" type="text" placeholder="phone number">
-					<input name="firstname" type="text" placeholder="first name">
-					<input name="lastname" type="text" placeholder="last name">
-					<a href="#start_page" data-role="button" data-transition="slide" data-theme="b">Sign Up</a>
-				</form>
-			</div>
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>
-			</footer>
-		</div>
+		<header data-role="header">
+			<h1>User Details</h1>
+		</header>
+		<div data-role="content">
 
-	</div>	
+			<form method="post" name="user-details">
+				<input name="phoneNumber" type="text" placeholder="phone number">
+				<input name="firstname" type="text" placeholder="first name">
+				<input name="lastname" type="text" placeholder="last name">
+				<a href="#start_page" data-role="button" data-transition="slide"
+					data-theme="b">Sign Up</a>
+			</form>
+		</div>
+		<footer data-role="footer" data-position="fixed">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>
+	</div>
+
+	</div>
 
 	<!--log in-->
-		<div data-role="page" id="login">
-		  
-			<header data-role="header" data-theme="b"><h1>Login</h1></header>
-			<div data-role="content">
-				<p style="text-align:center">Login Here</p>
-				<div style = "color:red" id = "login_error" class="alert alert-error">Invalid log in details</div>
-				<form method="post" name="signup">
-					
-					<input id = "in_phone_number" type="text" placeholder="Phone Number"></input>
-					<input id = "in_password" type="password" placeholder="password"></input>
-					
-					<a id = "login_btn" href="" data-role="button" data-transition="slide" data-theme="b">Log In</a>
-				</form>
-				<div>
-					<p style="text-align:center">Don't have an account? <br> Signup now</p>
-					<a href="#signup" data-role="button" data-theme="a">signup</a>
-				</div>
-			</div>	
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>
-			</footer>
+	<div data-role="page" id="login">
+
+		<header data-role="header" data-theme="b">
+			<h1>Login</h1>
+		</header>
+		<div data-role="content">
+			<p style="text-align: center">Login Here</p>
+			<div style="color: red" id="login_error" class="alert alert-error">Invalid
+				log in details</div>
+			<form method="post" name="signup">
+
+				<input id="in_phone_number" type="text" placeholder="Phone Number"></input>
+				<input id="in_password" type="password" placeholder="password"></input>
+
+				<a id="login_btn" href="" data-role="button" data-transition="slide"
+					data-theme="b">Log In</a>
+			</form>
+			<div>
+				<p style="text-align: center">
+					Don't have an account? <br> Signup now
+				</p>
+				<a href="#signup" data-role="button" data-theme="a">signup</a>
+			</div>
 		</div>
+		<footer data-role="footer" data-position="fixed">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>
+	</div>
 
 	<!-- User Start Page -->
 	<div data-role="page" id="start_page">
-			<header data-role="header">
-			<nav data-role="navbar" >
-			<ul>
-			<li><a href="#start_page" class="ui-btn-active ui-state-persist" data-icon="home"></a></li>
-			</ul>	
-			</nav>	
-			</header>
+    <header data-role="header" data-theme="b">
+        <h1>Home</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a" class="ui-btn-right">Logout</a>
+    </header>
 
-			<div data-role="content">
-				<h3 id = "welcome_user" style="text-align:center"></h3>
-				<p style="text-align:center"><h2>How may we serve you today?</h2></p>
-				<div>
-					<ul data-role="listview" data-inset="true">
-						<li ><a href="#request-cab"><img src="img/requestcab.png" class="ui-li-thumbnail"> Request a Cab</a></li>	
-						<li><a href="#reserve-cab"><img src="img/bookcab.png" class="ui-li-thumbnail">Reserve a Cab</a></li>
-						<li><a href="#check-history"><img src="img/history.png" class="ui-li-thumbnail">Check History</a></li>
-						<li><a href="#feedback"><img src="img/feedback.png" class="ui-li-thumbnial">Feedback</a></li>	
-					</ul>
-				</div>
-			</div>	
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>	
-			</footer>
-		</div>
+    <div data-role="content">
+    	<h3 id = "welcome_user" style="text-align:center"></h3>
+        <p style="text-align:center; color: white; font-size: 24px;">How may we serve you today?</p>
+
+        <div>
+            <ul data-role="listview" data-inset="true">
+                <li ><a href="#request-cab"><img src="img/requestcab.png" class="ui-li-thumbnail"> Request a Cab</a></li>
+                <li><a href="#reserve-cab"><img src="img/bookcab.png" class="ui-li-thumbnail">Reserve a Cab</a></li>
+                <li><a href="" onclick = "checkHistory()"><img src="img/history.png" class="ui-li-thumbnail">Check Transactions</a></li>
+                <li><a href="#feedback"><img src="img/feedback.jpg" class="ui-li-thumbnial">Feedback</a></li>
+                <li><a href="#services"><img src="img/services.jpg" class="ui-li-thumbnial">Services</a></li>
+            </ul>
+        </div>
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
 
 	<!--Request Cab-->
-		<div data-role="page" id="request-cab">
-			<header data-role="header"><h1>Request a Cab</h1>
-			<nav data-role="navbar" >
-			<ul>
-			<li><a href="#start_page" class="ui-btn-active ui-state-persist" data-icon="home"></a></li>
-			
-			</ul>	
-			</nav>		
-			</header>
-			
-			<div id = "map_canvas" ></div>
-			<div data-role="content">
-				<div style = "color:red" id = "request_error" class="alert alert-error">Incomplete details provided</div>
+	<div data-role="page" id="request-cab">
+		<header data-role="header" data-theme="b">
+			<a href="#start_page" data-icon="arrow-l" data-theme="c"
+				data-mini="true">Back</a>
+			<h1>Request a Cab</h1>
+			<a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+		</header>
+
+		<div id="map_canvas"></div>
+		<div data-role="content">
+			<section data-role="collapsible-set">
+				<div style="color: red" id="request_error" class="alert alert-error">Incomplete
+					details provided</div>
+				<h2>Requests</h2>
 				<form method="post">
-					<input id = "request_location" type="text" name="location" placeholder="location"></input>
-					<input id = "request_destination" type="text" name="destination" placeholder="destination"></input>
-					<input id = "pickup_time" type="text" name="time" placeholder="Time of Pick up"></input>
-					<input id = "timeframe" type="text" name="timeframe" placeholder="For how long?" style = "width: 50%"></input>
-					<select id = "timeframe_option" style = "display: inline; width: 50%; float: right;">
-  						<option value="minutes">Minutes</option>
-  						<option value="hours">Hours</option>
-					</select>
-					<textarea id = "other_info" name="textarea" id="textarea" placeholder = "Any additional details for driver to find you"></textarea>
+					<input id="request_location" type="text" name="location"placeholder="location"></input> 
+					<input id="request_destination" type="text" name="destination" placeholder="destination"></input>
+					<input name="mydate" id="pickup_time" type="time" data-role="datebox" placeholder="What time do you want to leave?"
+						data-options='{"mode": "timeflipbox"}'>
+					<!-- 					<input id = "pickup_time" type="text" name="time" placeholder="Time of Pick up"></input> -->
+					<!-- 					<input id="timeframe" type="text" name="timeframe" -->
+					<!-- 						placeholder="For how long?" style="width: 50%"></input> <select -->
+					<!-- 						id="timeframe_option" -->
+					<!-- 						style="display: inline; width: 50%; float: right;"> -->
+					<!-- 						<option value="minutes">Minutes</option> -->
+					<!-- 						<option value="hours">Hours</option> -->
+					<!-- 					</select> -->
+					<textarea id="other_info" name="textarea" id="textarea" placeholder="Any additional details for driver to find you"></textarea>
 					<fieldset class="ui-grid-a">
-						<div class="ui-block-a"><a id = "request_btn" href="" data-role="button" data-theme="b" onclick = "requestCab()">Send Request</a></div>
-						<div class="ui-block-b"><a href="#start_page" data-role="button" data-theme="a">Cancel</a></div>
+						<div class="ui-block-a">
+							<a id="request_btn" href="" data-role="button" data-theme="b"
+								onclick="requestCab()">Send Request</a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#start_page" data-role="button" data-theme="a">Cancel</a>
+						</div>
 					</fieldset>
 				</form>
-			</div>
-			<footer data-position = "fixed" data-role="footer">
-			<h3>&copy 2013 Accra Cab Services</h3>		
-			</footer>	
-		</div>	
+
+
+				<div data-role="collapsible">
+					<h3>See all requests</h3>
+					<ul data-role="listview" data-role="collapsible">
+						<li data-role="divider" data-theme="a">Tuesday, April 30</li>
+						<li>
+							<div data-role="collapsible-set">
+								<div data-mini="true" data-inset="true">
+									<p>Location: Pent Hostel</p>
+									<p>Destination: Mest</p>
+									<p>Date: Wed, 1st May, 2013</p>
+									<p>Time: 2:00 PM</p>
+									<p>Other info: I have an appointment at 2:30 and need to be
+										there 10mins ahead.</p>
+									<a href="#" data-role="button" data-mini="true"
+										name="edit1-schedule" data-inline="true">Edit request</a> <a
+										href="#" data-role="button" data-mini="true"
+										name="cancel1-schedule" data-inline="true">Cancel request</a>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div data-role="collapsible-set">
+								<div data-mini="true" data-inset="true">
+									<p>Location: Pent Hostel</p>
+									<p>Destination: Mest</p>
+									<p>Date: Wed, 1st May, 2013</p>
+									<p>Time: 2:00 PM</p>
+									<p>Other info: I have an appointment at 2:30 and need to be
+										there 10mins ahead.</p>
+									<a href="#" data-role="button" data-mini="true"
+										name="edit2-schedule" data-inline="true">Edit request</a> <a
+										href="#" data-role="button" data-mini="true"
+										name="cancel2-schedule" data-inline="true">Cancel request</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</section>
+		</div>
+		<footer data-position="fixed" data-role="footer">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>
+	</div>
 
 	<!--Reserve Cab-->
-		<div data-role="page" id="reserve-cab">
-			<header data-role="header"><h2>Reserve a Cab</h2>
-			<nav data-role="navbar" >
-			<ul>
-			<li><a href="#start_page" class="ui-btn-active ui-state-persist" data-icon="home"></a></li>
-			
-			</ul>	
-			</nav>		
-			</header>
+	<div data-role="page" id="reserve-cab">
+		<header data-role="header" data-theme="b">
+        <a href="#start-page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Reserve a Cab</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+		<div id="map_canvas" data-role="content">
 			<div data-role="content">
-				<div data-role="content">
-				<form method="post">
-					<input type="text" name="location" placeholder="location"></input>
-					<input type="text" name="destination" placeholder="destination"></input>
-					<input type="date" name="date-from" placeholder="beginning from"></input>
-					<input type="date" name="date-to" placeholder="ending on"></input>
-					<input type="time" name="time-from" placeholder="at what time?"></input>
-					<input type="time" name="time-to" placeholder="till what time?"></input>
+				<div style="color: red" id="reserve_error" class="alert alert-error">Incomplete
+					details provided</div>
+					<form method="post" style="color: #a9a9a9">
+	                <input id = "reserve_location" type="text" name="location" placeholder="location">
+	                <input id = "reserve_destination" type="text" name="destination" placeholder="destination">
+	
+	                <input id = "from_date" name="pickupdate" type="date" data-role="datebox" placeholder="pickup date"
+	                       data-options='{"mode": "calbox", "afterToday": true}'>
+	                <input name="to_date" id="to_date" type="date" data-role="datebox" placeholder="return date"
+	                       data-options='{"mode": "calbox", "afterToday": true}'>
+	
+	                <input name="pickuptime" id="reserve_pickup_time" type="time" data-role="datebox" placeholder="pickup time"
+	                       data-options='{"mode": "timeflipbox"}'>
+	                <input name="returntime" id="reserve_to_time" type="time" data-role="datebox" placeholder="return time"
+	                       data-options='{"mode": "timeflipbox"}'>
+					<input id="total_passengers" type="text" name="total_passengers" placeholder="How Many Are You?"></input>
+					<textarea id="reserve_other_info" name="textarea" id="textarea" placeholder="Any additional details or information"></textarea>
+					
 					<fieldset class="ui-grid-a">
-						<div class="ui-block-a"><a href="#request-confirmation" data-role="button" data-theme="b">Send Request</a></div>
-						<div class="ui-block-b"><a href="#start_page" data-role="button" data-theme="a">Cancel</a></div>
+						<div class="ui-block-a">
+							<a href="" data-role="button" data-theme="b"
+								onclick="reserveCab()">Send Request</a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#start_page" data-role="button" data-theme="a">Cancel</a>
+						</div>
 					</fieldset>
 				</form>
-				
-			</div>
 
 			</div>
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3></footer>
+
 		</div>
+		<footer data-role="footer">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>
+	</div>
 
 	<!--Check History-->
-		<div data-role="page" id="check-history">
-			<header data-role="header"><h1>Check History</h1>
-			<nav data-role="navbar" >
-			<ul>
-			<li><a href="#start_page" class="ui-btn-active ui-state-persist" data-icon="home"></a></li>
-			</ul>	
-			</nav>	
-			</header>
-			<div data-role="content">
-				<ul date="lisview" data-inset="true" data-role="list-divider">
-					<li>
-						you have been here 
-					</li>
-				</ul>
-			</div>
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>	
-			</footer>
+	<div data-role="page" id="check-history">
+		<header data-role="header" data-theme="b">
+        <a href="#start_page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Check Transaction</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+    
+		<div data-role="content">
+			<div id = "history_content">
+            <ul id = "history_list" data-role="listview" data-inset="true">
+                
+            </ul>
+        </div>
 		</div>
+		<footer data-role="footer" data-position="fixed">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>
+	</div>
 
 	<!--Feedback-->
-		<div data-role="page" id="feedback">
-			<header data-role="header"><h2>Feedback</h2>
-			<nav data-role="navbar" >
-			<ul>
-			<li><a href="#start_page" class="ui-btn-active ui-state-persist" data-icon="home"></a></li>
-			
-			</ul>	
-			</nav>	
-			</header>
-			<div data-role="content">
-				<form>
-					<fieldset data-role="controlgroup" data-mini="true">
-    				<input type="radio" name="radio-mini" id="radio-mini-1" value="choice-1" checked="checked"/>
-    				<label for="radio-mini-1">Price</label>
-					<input type="radio" name="radio-mini" id="radio-mini-2" value="choice-2"/>
-    				<label for="radio-mini-2">Customer Care</label>
-    				<input type="radio" name="radio-mini" id="radio-mini-3" value="choice-3"/>  <label for="radio-mini-3">Security</label>
-					</fieldset>	
-					<textarea placeholder="Tell us how you feel about our service"></textarea>
-					<fieldset class="ui-grid-a">
-						<div class="ui-block-a"><a href="#request-confirmation" data-role="button" data-theme="b">Send Feedback</a></div>
-						<div class="ui-block-b"><a href="#start_page" data-role="button" data-theme="a">Cancel</a></div>
-					</fieldset>
-				</form>
-			</div>
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>	
-			</footer>
-		</div>	
+	<div data-role="page" id="feedback">
+    <header data-role="header" data-theme="b">
+        <a href="#start_page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Feedback</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+    <div data-role="content">
+    	<div style="color: red" id="feedback_error" class="alert alert-error"></div>
+        <form>
+            <fieldset data-role="controlgroup" data-mini="true">
+
+                <label for="price" name="price_label" value="star 1">Price</label>
+                <div id="price">
+                    <input id = "price_one" name="price" type="radio" class="star" data-role="none" value = "1"/>
+                    <input id = "price_two" name="price" type="radio" class="star" data-role="none" value = "2"/>
+                    <input id = "price_three" name="price" type="radio" class="star" data-role="none" value = "3"/>
+                    <input id = "price_four" name="price" type="radio" class="star" data-role="none" value = "4"/>
+                    <input id = "price_five" name="price" type="radio" class="star" data-role="none" value = "5"/>
+                </div>
+                <br>
+
+                <label for="punctuality" name="punctuality_label" value="star 1">Punctuality</label>
+                <div id="punctuality">
+                    <input id = "punc_one" name="punctuality" type="radio" class="star" data-role="none" value = "1"/>
+                    <input id = "punc_two" name="punctuality" type="radio" class="star" data-role="none" value = "2"/>
+                    <input id = "punc_three" name="punctuality" type="radio" class="star" data-role="none" value = "3"/>
+                    <input id = "punc_four" name="punctuality" type="radio" class="star" data-role="none" value = "4"/>
+                    <input id = "punc_five" name="punctuality" type="radio" class="star" data-role="none" value = "5"/>
+                </div><br>
+
+                <label for="security" name="security_label" value="star 1">Security</label>
+                <div id="security">
+                    <input id = "security_one" name="security" type="radio" class="star" data-role="none" value = "1"/>
+                    <input id = "security_two" name="security" type="radio" class="star" data-role="none" value = "2"/>
+                    <input id = "security_three" name="security" type="radio" class="star" data-role="none" value = "3"/>
+                    <input id = "security_four" name="security" type="radio" class="star" data-role="none" value = "4"/>
+                    <input id = "security_five" name="security" type="radio" class="star" data-role="none" value = "5"/>
+                </div><br>
+
+                <label for="customercare" name="customercare_label" value="star 1">Customer Care</label>
+                <div id="customercare">
+                    <input id = "care_one" name="customercare" type="radio" class="star" data-role="none" value = "1"/>
+                    <input id = "care_two" name="customercare" type="radio" class="star" data-role="none" value = "2"/>
+                    <input id = "care_three" name="customercare" type="radio" class="star" data-role="none" value = "3"/>
+                    <input id = "care_four" name="customercare" type="radio" class="star" data-role="none" value = "4"/>
+                    <input id = "care_five" name="customercare" type="radio" class="star" data-role="none" value = "5"/>
+                </div><br>
+
+                <label for="standard" name="standard_label" value="star 1">Standard</label>
+                <div id="standard">
+                    <input id = "standard_one" name="standard" type="radio" class="star" data-role="none" value = "1"/>
+                    <input id = "standard_two" name="standard" type="radio" class="star" data-role="none" value = "2"/>
+                    <input id = "standard_three" name="standard" type="radio" class="star" data-role="none" value = "3"/>
+                    <input id = "standard_four" name="standard" type="radio" class="star" data-role="none" value = "4"/>
+                    <input id = "standard_five" name="standard" type="radio" class="star" data-role="none" value = "5"/>
+                </div><br>
+            </fieldset>
+
+            <textarea id = "text_feedback" placeholder="Tell us how you feel about our service" style="height: 100px"></textarea>
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><a href="" data-role="button" data-theme="b" onclick = "sendFeedback()">Send Feedback</a></div>
+                <div class="ui-block-b"><a href="#start_page" data-role="button" data-theme="a">Cancel</a></div>
+            </fieldset>
+        </form>
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
 
 	<!--Feedback-Thanks-->
-		<div id="feedback-thanks" data-role="dialog">
-			<div data-role="header" data-dismissible="false" data-potision-to-window><h1>Thank You</h1></div>
-			<div data-role="content">
-				<div>
-					<p style="text-align:center">We deeply appreciate your feedback.<br>Thank you.</p>
-				</div>
-			</div>
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>	
-			</footer>
-		</div>
+	<div id="feedback-thanks" data-role="dialog">
+    <div data-role="header" data-dismissible="false" data-potision-to-window>
+        <h1>Thank You</h1>
+    </div>
+    <div data-role="content">
+        <p style="text-align:center">We deeply appreciate your feedback.<br>Thank you.</p>
+        <div class="ui-block-b"><a href="#start_page" data-role="button" data-theme="a">OK</a></div>
+    </div>
+    
+</div>
+
 	<!--request-confirmation-->
-		<div id="request-confirmation" data-role="dialog">
-			<div data-role="header" data-dismissible="false" data-potision-to-window><h1>Request Received</h1></div>
-			<div data-role="content">
-				<div>
-					<p style="text-align:center">Your Request has been received. It is receiving immediate attention. We will get back to you in a minute.<br>Thank you.</p>
-				</div>
+	<div id="request-confirmation" data-role="dialog">
+		<div href = "#start_page" data-role="header" data-dismissible="false"
+			data-potision-to-window>
+			<h1>Request Received</h1>
+		</div>
+		<div data-role="content">
+			<div>
+				<p style="text-align: center">
+					Your Request has been received. It is receiving immediate
+					attention. We will get back to you in a few minute.<br>Thank you.
+				</p>
 			</div>
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>
-			</footer>
+			<div class="ui-block-b"><a href="#start_page" data-role="button" data-theme="a">OK</a></div>
 		</div>
-
-	<!--next page here-->
-		<div data-role="page" id="????">
-			<header data-role="header">
-			<nav data-role="navbar" >
-			<ul>
-			<!-- <li><a href="#start_page" class="ui-btn-active ui-state-persist" data-icon="start_page"></a></li> -->
-			
-			</ul>	
-			</nav>	
-			</header>
-			<div data-role="content" data-position = "fixed"></div>
-			<footer data-role="footer">
+		
+		<!-- <footer data-role="footer" data-position="fixed">
 			<h3>&copy 2013 Accra Cab Services</h3>
-			</footer>
-		</div>
+		</footer> -->
+	</div>
+	
+	<!--Services-->
+<div data-role="page" id="services">
+    <header data-role="header" data-theme="b">
+        <a href="#start_page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Services</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+    <div data-role="content">
+        <div data-role="collapsible">
+            <h3>General Services</h3>
+            <p>Accra Cab Services offers a unique and reliable cabs services in Ghana with the most competitive rates and highest professional standards. We currently provide the following services:
+            <ul>
+                <li>Airport shuttles</li>
+                <li>24 hour cab services</li>
+                <li>Charter ervices</li>
+                <li>Regular schedule pickups</li>
+                <li>Corporate transport arrangements</li>
+                <li>Event support transport services</li>
+                <li>Student transport services</li>
+                <li>Special Arrangements</li>
+            </ul>
+            </p>
+        </div>
 
-  </body>
+        <div data-role="collapsible">
+            <h3>Rate Card</h3>
+            <p>
+            <ul>
+                <li>15mins - 30mins: </li>
+                <li>30mins - 1hr: </li>
+                <li>Corporate Transport Arrangements</li>
+                <li>Drop offs</li>
+                <li>Special Arrangements</li>
+            </ul>
+            </p>
+        </div>
+
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
+
+<script src="/js/jquery-1.9.1.min.js"></script>
+<script src="/js/jquery.mobile-1.3.1.min.js"></script>
+<script src="/js/user.js"></script>
+<script src="/js/helpful.js"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+<script type="text/javascript" src="/js/jqm-datebox.core.min.js"></script>
+<script type="text/javascript" src="/js/jqm-datebox.mode.datebox.min.js"></script>
+<script type="text/javascript" src="/js/jqm-datebox.mode.calbox.min.js"></script>
+<script type="text/javascript" src="/js/jqm-datebox.mode.flipbox.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<script type="text/javascript" src="/js/jquery.rating.pack.js"></script>
+</body>
 </html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accra Cab Services</title>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1">  -->
+    <link rel="stylesheet" href="/css/jquery.mobile-1.3.1.min.css">
+    <link rel="stylesheet" href="/css/jqm-datebox.min.css">
+    <link rel="stylesheet" href="/css/jquery.rating.css">
+
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.mobile-1.3.1.min.js"></script>
+
+    <script type="text/javascript" src="/js/jqm-datebox.core.min.js"></script>
+    <script type="text/javascript" src="/js/jqm-datebox.mode.datebox.min.js"></script>
+    <script type="text/javascript" src="/js/jqm-datebox.mode.calbox.min.js"></script>
+    <script type="text/javascript" src="/js/jqm-datebox.mode.flipbox.min.js"></script>
+
+    <script type="text/javascript" src="/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/js/jquery.rating.pack.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        $(document).bind("mobileinit", function(evt) {
+            alert("Mobile initialization event fired");
+            $.mobile.defaultPageTransition = "none";
+        });
+
+        $('.hover-star').rating({
+            focus: function(value, link){
+                var tip = $('#hover-test');
+                tip[0].data = tip[0].data || tip.html();
+                tip.html(link.title || 'value: '+value);
+            },
+            blur: function(value, link){
+                var tip = $('#hover-test');
+                $('#hover-test').html(tip[0].data || '');
+            }
+        });
+    </script>
+
+</head>
+<body>
+<!-- Welcome -->
+<section data-role="page" id="welcome">
+    <header data-role="header">
+        <h1>ACS Mobile App</h1>
+    </header>
+    <img src="/img/ACS_LOGO.png" style="height:50%; width:100%;">
+    <div data-role="content" >
+        <ul data-role="listview" style="margin-top: 10px">
+            <li data-icon="false"><a href="" style="text-align:center; font-size: 25px">Unique and Reliable!</a></li>
+        </ul>
+        <fieldset class="ui-grid-a" data-role="fieldcontain" style="margin-top: 30px">
+            <div class="ui-block-a"><a href="#signup" data-role="button" data-theme="b">signup</a></div>
+            <div class="ui-block-b"><a href="#login" data-role="button" data-theme="a">login</a></div>
+        </fieldset>
+    </div>
+    <div data-role="footer" data-postion="fixed">
+        <h1>&copy 2013 Accra Cab Services</h1>
+    </div>
+</section>
+
+<!-- signup -->
+<div data-role="page" id="signup">
+    <div data-role="header" data-theme="b">
+        <h1>Sign Up</h1>
+    </div>
+    <div data-role="content">
+        <form method="post" name="signup" data-role="fieldcontain" style="margin:20% 0 0 20%" >
+            <input lable for="username" type="text" placeholder="user name">
+            <input lable for="phoneNumber" type="text" placeholder="phone number">
+            <input lable for="password" type="password" placeholder="password">
+            <input lable for="verifyPassword" type="password" placeholder="verify password">
+            <a href="#start-page" data-role="button"  data-theme="b" class="centerwidth">Sign Up</a>
+        </form>
+        <div data-role="fieldcontain" class="centerstuff">
+            <p style="text-align: center; font-size: 20px; color: #ffffff" class="centerwidth">Do you have an account already?<br>Please log in</p>
+            <a href="#login" data-role="button"  data-theme="a" class="centerwidth">Log In</a>
+        </div>
+    </div>
+    <div data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </div>
+</div>
+
+
+<!--log in-->
+<div data-role="page" id="login">
+    <header data-role="header" data-theme="b"><h1>Login</h1></header>
+    <div data-role="content">
+        <form method="post" name="signup" data-role="fieldcontain" style="margin:20% 0 0 20%" >
+            <input type="text" placeholder="phone number" name="phonenumber">
+            <input type="password" placeholder="password" name="'phonenumber">
+            <a href="#start-page" data-role="button"  data-theme="a" class="centerwidth">Login</a>
+        </form>
+        <div data-role="fieldcontain" class="centerstuff">
+            <p style="text-align: center; font-size: 20px; color: #ffffff; margin: 20px 0" class="centerwidth">Don't have an account?<br>Please sign up</p>
+            <a href="#signup" data-role="button"  data-theme="b" class="centerwidth">Sign up</a>
+        </div>
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
+
+<!-- User Start Page -->
+<div data-role="page" id="start-page">
+    <header data-role="header" data-theme="b">
+        <h1>Home</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a" class="ui-btn-right">Logout</a>
+    </header>
+
+    <div data-role="content">
+        <p style="text-align:center; color: white; font-size: 24px;">How may we serve you today?</p>
+
+        <div>
+            <ul data-role="listview" data-inset="true">
+                <li ><a href="#request-cab"><img src="img/requestcab.png" class="ui-li-thumbnail"> Request a Cab</a></li>
+                <li><a href="#reserve-cab"><img src="img/bookcab.png" class="ui-li-thumbnail">Reserve a Cab</a></li>
+                <li><a href="#check-history"><img src="img/history.png" class="ui-li-thumbnail">Check Transactions</a></li>
+                <li><a href="#feedback"><img src="img/feedback.jpg" class="ui-li-thumbnial">Feedback</a></li>
+                <li><a href="#services"><img src="img/services.jpg" class="ui-li-thumbnial">Services</a></li>
+            </ul>
+        </div>
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
+
+<!--Request Cab-->
+<div data-role="page" id="request-cab">
+    <header data-role="header" data-theme="b">
+        <a href="#start-page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Request a Cab</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+    <div data-role="content">
+        <section data-role="collapsible-set">
+            <div data-role="collapsible">
+                <h3>New request</h3>
+                <ul>
+                    <form method="post">
+                        <input type="text" name="location" placeholder="location">
+                        <input type="text" name="destination" placeholder="destination">
+
+                        <input name="mydate" id="reqdate" type="date" data-role="datebox" placeholder="when do you want to leave?"
+                               data-options='{"mode": "calbox", "afterToday": true}'>
+
+                        <input name="mydate" id="reqtime" type="time" data-role="datebox" placeholder="at what time?"
+                               data-options='{"mode": "timeflipbox"}'>
+
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a"><a href="#request-confirmation" data-role="button" data-theme="b">Send Request</a></div>
+                            <div class="ui-block-b"><a href="#start-page" data-role="button" data-theme="a">Cancel</a></div>
+                        </fieldset>
+                    </form>
+                </ul>
+            </div>
+
+            <div data-role="collapsible">
+                <h3>See all requests</h3>
+                <ul data-role="listview" data-role="collapsible">
+                    <li data-role="divider" data-theme="a">Tuesday, April 30</li>
+                    <li>
+                        <div data-role="collapsible-set">
+                            <div  data-mini="true" data-inset="true">
+                                <p>Location: Pent Hostel</p>
+                                <p>Destination: Mest</p>
+                                <p>Date: Wed, 1st May, 2013</p>
+                                <p>Time: 2:00 PM</p>
+                                <p>Other info: I have an appointment at 2:30 and need to be there 10mins ahead. </p>
+                                <a href="#" data-role="button" data-mini="true" name="edit1-schedule" data-inline="true">Edit request</a>
+                                <a href="#" data-role="button" data-mini="true" name="cancel1-schedule" data-inline="true">Cancel request</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div data-role="collapsible-set">
+                            <div  data-mini="true" data-inset="true">
+                                <p>Location: Pent Hostel</p>
+                                <p>Destination: Mest</p>
+                                <p>Date: Wed, 1st May, 2013</p>
+                                <p>Time: 2:00 PM</p>
+                                <p>Other info: I have an appointment at 2:30 and need to be there 10mins ahead. </p>
+                                <a href="#" data-role="button" data-mini="true" name="edit2-schedule" data-inline="true">Edit request</a>
+                                <a href="#" data-role="button" data-mini="true" name="cancel2-schedule" data-inline="true">Cancel request</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
+</div>
+
+
+<!--Reserve Cab-->
+<div data-role="page" id="reserve-cab">
+    <header data-role="header" data-theme="b">
+        <a href="#start-page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Reserve a Cab</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+    <div data-role="content">
+        <div data-role="content">
+            <form method="post" style="color: #a9a9a9">
+                <input type="text" name="location" placeholder="location">
+                <input type="text" name="destination" placeholder="destination">
+
+                <input name="pickupdate" id="pickupdate" type="date" data-role="datebox" placeholder="pickup date"
+                       data-options='{"mode": "calbox", "afterToday": true}'>
+                <input name="returndate" id="returndate" type="date" data-role="datebox" placeholder="return date"
+                       data-options='{"mode": "calbox", "afterToday": true}'>
+
+                <input name="pickuptime" id="pickuptime" type="time" data-role="datebox" placeholder="pickup time"
+                       data-options='{"mode": "timeflipbox"}'>
+                <input name="returntime" id="returntime" type="time" data-role="datebox" placeholder="return time"
+                       data-options='{"mode": "timeflipbox"}'>
+
+                <fieldset class="ui-grid-a">
+                    <div class="ui-block-a"><a href="#request-confirmation" data-role="button" data-theme="b">Send Request</a></div>
+                    <div class="ui-block-b"><a href="#start-page" data-role="button" data-theme="a">Cancel</a></div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
+
+<!--Check History-->
+<div data-role="page" id="check-history">
+    <header data-role="header" data-theme="b">
+        <a href="#start-page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Check Transaction</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+    <div data-role="content">
+        <ul date="lisview" data-inset="true" data-role="list-divider">
+            <li>
+                you have been here
+            </li>
+        </ul>
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
+
+<!--request-confirmation-->
+<div id="request-confirmation" data-role="dialog">
+    <div data-role="header" data-dismissible="true" data-potision-to-window>
+        <h1>Request Received</h1>
+    </div>
+    <div data-role="content">
+        <p style="text-align:center">Your request has been received. It is receiving immediate attention. We will get back to you in a minute.<br>Thank you.</p>
+    </div>
+</div>
+
+<!--Feedback-->
+<div data-role="page" id="feedback">
+    <header data-role="header" data-theme="b">
+        <a href="#start-page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Feedback</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+    <div data-role="content">
+        <form>
+            <fieldset data-role="controlgroup" data-mini="true">
+
+                <label for="price" name="price" value="star 1">Price</label>
+                <div id="price">
+                    <input name="price" type="radio" class="star" data-role="none"/>
+                    <input name="price" type="radio" class="star" data-role="none"/>
+                    <input name="price" type="radio" class="star" data-role="none"/>
+                    <input name="price" type="radio" class="star" data-role="none"/>
+                    <input name="price" type="radio" class="star" data-role="none"/>
+                </div>
+                <br>
+
+                <label for="punctuality" name="punctuality" value="star 1">Punctuality</label>
+                <div id="punctuality">
+                    <input name="punctuality" type="radio" class="star" data-role="none"/>
+                    <input name="punctuality" type="radio" class="star" data-role="none"/>
+                    <input name="punctuality" type="radio" class="star" data-role="none"/>
+                    <input name="punctuality" type="radio" class="star" data-role="none"/>
+                    <input name="punctuality" type="radio" class="star" data-role="none"/>
+                </div><br>
+
+                <label for="security" name="security" value="star 1">Security</label>
+                <div id="security">
+                    <input name="security" type="radio" class="star" data-role="none"/>
+                    <input name="security" type="radio" class="star" data-role="none"/>
+                    <input name="security" type="radio" class="star" data-role="none"/>
+                    <input name="security" type="radio" class="star" data-role="none"/>
+                    <input name="security" type="radio" class="star" data-role="none"/>
+                </div><br>
+
+                <label for="customercare" name="customercare" value="star 1">Customer Care</label>
+                <div id="customercare">
+                    <input name="customercare" type="radio" class="star" data-role="none"/>
+                    <input name="customercare" type="radio" class="star" data-role="none"/>
+                    <input name="customercare" type="radio" class="star" data-role="none"/>
+                    <input name="customercare" type="radio" class="star" data-role="none"/>
+                    <input name="customercare" type="radio" class="star" data-role="none"/>
+                </div><br>
+
+                <label for="standard" name="standard" value="star 1">Standard</label>
+                <div id="standard">
+                    <input name="standard" type="radio" class="star" data-role="none"/>
+                    <input name="standard" type="radio" class="star" data-role="none"/>
+                    <input name="standard" type="radio" class="star" data-role="none"/>
+                    <input name="standard" type="radio" class="star" data-role="none"/>
+                    <input name="standard" type="radio" class="star" data-role="none"/>
+                </div><br>
+            </fieldset>
+
+            <textarea placeholder="Tell us how you feel about our service" style="height: 100px"></textarea>
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><a href="#feedback-thanks" data-role="button" data-theme="b">Send Feedback</a></div>
+                <div class="ui-block-b"><a href="#start-page" data-role="button" data-theme="a">Cancel</a></div>
+            </fieldset>
+        </form>
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
+
+<!--Feedback-Thanks-->
+<div id="feedback-thanks" data-role="dialog">
+    <div data-role="header" data-dismissible="false" data-potision-to-window>
+        <h1>Thank You</h1>
+    </div>
+    <div data-role="content">
+        <p style="text-align:center">We deeply appreciate your feedback.<br>Thank you.</p>
+    </div>
+</div>
+
+<!--Services-->
+<div data-role="page" id="services">
+    <header data-role="header" data-theme="b">
+        <a href="#start-page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+        <h1>Services</h1>
+        <a href="#welcome" data-icon="delete" data-theme="a">Logout</a>
+    </header>
+    <div data-role="content">
+        <div data-role="collapsible">
+            <h3>General Services</h3>
+            <p>Accra Cab Services offers a unique and reliable cabs services in Ghana with the most competitive rates and highest professional standards. We currently provide the following services:
+            <ul>
+                <li>Airport shuttles</li>
+                <li>24 hour cab services</li>
+                <li>Charter ervices</li>
+                <li>Regular schedule pickups</li>
+                <li>Corporate transport arrangements</li>
+                <li>Event support transport services</li>
+                <li>Student transport services</li>
+                <li>Special Arrangements</li>
+            </ul>
+            </p>
+        </div>
+
+        <div data-role="collapsible">
+            <h3>Rate Card</h3>
+            <p>
+            <ul>
+                <li>15mins - 30mins: </li>
+                <li>30mins - 1hr: </li>
+                <li>Corporate Transport Arrangements</li>
+                <li>Drop offs</li>
+                <li>Special Arrangements</li>
+            </ul>
+            </p>
+        </div>
+
+    </div>
+    <footer data-role="footer">
+        <h3>&copy 2013 Accra Cab Services</h3>
+    </footer>
+</div>
+</body>
+</html>

@@ -89,9 +89,6 @@
 													<label>Destination: </label>{{request.destination}}
 												</p>
 												<p>
-													<label>Time Frame: </label>{{request.timeframe}}
-												</p>
-												<p>
 													<label>Pick Up Time: </label>{{request.pickup_time}}
 												</p>
 												<p>
@@ -203,9 +200,6 @@
 				</form>
 			</div>
 		</div>
-		<footer data-role="footer" data-position="fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>
-		</footer>
 	</div>
 	<!-- End add driver modal page -->
 	
@@ -219,9 +213,6 @@
 				</div>
 			</div>
 			<div class="ui-block-b"><a href="#dispatch-home" data-role="button" data-theme="a">OK</a></div>
-			<footer data-role="footer" data-position = "fixed">
-			<h3>&copy 2013 Accra Cab Services</h3>
-			</footer>
 		</div>
 		<!-- End adding driver confirmation-->
 	
@@ -246,7 +237,6 @@
 						{{request.passenger.last_name}}</h3>
 					<span> <label>Current Location: </label>{{request.current_location}}
 					</span><br> <span> <label>Destination: </label>{{request.destination}}
-					</span><br> <span> <label>Time Frame: </label>{{request.timeframe}}
 					</span><br> <span> <label>Pick Up Time: </label>{{request.pickup_time}}
 					</span><br> <span> <label>Other Info: </label>{{request.other_info}}
 					</span>
@@ -296,16 +286,28 @@
 	<!-- Begin Feedback requests page -->
 	<div data-role="page" id="feedback">
 		<header data-role="header">
+			<a style = "margin-top: 10px;" href="#dispatch-home" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
 			<h1>ACS Dashboard</h1>
 		</header>
 		<div data-role="content" class="span10" style="margin: auto">
 
-			<div class="pass_details" data-role="collapsible-set"
-				data-inset="true"></div>
-			<footer data-role="footer" data-position="fixed">
+			<ul data-role="listview" data-inset="true">
+                {% for feedback in feedbacks %}
+                	<li>
+                		<div style = "display: inline">{{feedback.passenger.first_name}} {{feedback.passenger.last_name}}</div>
+                		<div><label>Price Rating:</label>{{feedback.price_rating}}</div>
+                		<div><label>Punctuality Rating:</label>{{feedback.punctuality_rating}}</div>
+                		<div><label>Price Rating:</label>{{feedback.price_rating}}</div>
+                	</li>
+                	{% endfor %}
+                
+            </ul>
+			
+		</div>
+		
+		<footer data-role="footer" data-position="fixed">
 				<h3>&copy 2013 Accra Cab Services</h3>
 			</footer>
-		</div>
 	</div>
 	<!-- End Feedback requests page -->
 
