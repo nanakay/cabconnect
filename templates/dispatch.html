@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+<title>Accra Cab Services</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="/css/jquery.mobile-1.3.1.min.css">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+	<div data-role="page" id="welcome">
+		<div data-role="header" class="navbar navbar-inverse">
+			<h1>ACS Web Dashboard</h1>
+		</div>
+		<div data-role="content">
+			<div>
+				<img src="/img/Accracab.png" style="height: 60%; width: 100%;">
+			</div>
+			<div>
+				<form style="width: 40%;">
+					<input type="text" name="admin" placeholder="Email"> <input
+						type="password" name="admin-passwrd" placeholder="Password">
+					<a href="#dispatch-home" data-role="button" data-transition="slide"
+						data-theme="b">Log In</a>
+				</form>
+			</div>
+			<footer data-role="footer">
+				<h3>&copy 2013 Accra Cab Services</h3>
+			</footer>
+		</div>
+	</div>
+
+	<!--Dashboard/Home-->
+	<div data-role="page" id="dispatch-home">
+		<header data-role="header" class="navbar navbar-inverse">
+			<nav data-role="navbar">
+				<ul>
+					<li><a href="#start-page"
+						class="ui-btn-active ui-state-persist" data-icon="home"></a></li>
+				</ul>
+			</nav>
+		</header>
+		<div data-role="content" class="container-fluid">
+			<div class="row-fliud">
+				<div class="span2">
+					<!-- <li class='divider'></li> -->
+					<li class="nav-header">Client</li>
+					<!-- <li class='divider'></li> -->
+					<ul class="nav nav-tabs nav-stacked">
+						<li><a href="#pending-requests">Pending Requests</a></li>
+						<li><a href="#active-requests">Active Requests</a></li>
+						<li><a href="#completed-requests">Completed Requests</a></li>
+						<li><a href="#schedule">Schedule</a></li>
+						<li><a href="#feedback">Feedback</a></li>
+						<li class='divider'></li>
+						<li class="nav-header">Driver</li>
+						<li class='divider'></li>
+						<li><a href="">Active</a></li>
+						<li><a href="">Avaliable</a></li>
+					</ul>
+				</div>
+				<div class="span10" class="row">
+					<div class="span7">
+						<ul>
+							<li class="nav-header">Pending Request</li>
+							<div id="pending-requests">
+								<ul data-role="listview" data-mini="true"
+									data-role="collapsible" data-inset="true">
+
+									<li data-role="divider" data-theme="a">Tuesday, April 30</li>
+
+
+									<li>{% for request in pending_requests %}
+										<div class="pass_details" data-mini="true"
+											data-role="collapsible-set" data-inset="true">
+
+											<div data-role="collapsible" data-mini="true"
+												data-inset="true">
+												<h3>{{request.passenger.first_name}}
+													{{request.passenger.last_name}}</h3>
+												<p>
+													<label>Current Location: </label>{{request.current_location}}
+												</p>
+												<p>
+													<label>Destination: </label>{{request.destination}}
+												</p>
+												<p>
+													<label>Pick Up Time: </label>{{request.pickup_time}}
+												</p>
+												<p>
+													<label>Other Info: </label>{{request.other_info}}
+												</p>
+
+												<a class="btn btn-small btn-info" style = "color: white" name="add_driver"
+									data-dismiss="modal" 
+									href="#{{request.key()}}" >Assign Driver</a>
+													
+													<a class="btn btn-small btn-info" style = "color: white" name="add_driver"
+									data-dismiss="modal" 
+									href="#" >Cancel</a>
+											</div>
+
+										{% endfor %}
+
+									</li>
+								</ul>
+							</div>
+						</ul>
+					</div>
+
+
+
+
+					<div class="span2">
+						<div>
+							<a class="btn btn-small btn-info" style = "color: white" name="add_driver"
+									data-dismiss="modal" 
+									href="#add_driver" >Add Driver</a>
+							
+							<a class="btn btn-small btn-info" style = "color: white" name="add_account"
+									data-dismiss="modal" 
+									href="#add_driver" >Add Admin Account</a>
+
+							<li class="nav-header">Active Drivers</li>
+							<div data-role="collapsible"></div>
+						</div>
+						<li class="nav-header">Available Drivers</li>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<footer data-position="fixed" data-role="footer">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>
+
+
+	</div>
+
+	<!-- Start of accept or decline modal message -->
+	{% for request in pending_requests %}
+	<div id="{{request.key()}}" data-role="dialog">
+		<div data-role="header" data-dismissible="false"
+			data-potision-to-window>
+			<h1>Assign A Driver And Confirm</h1>
+		</div>
+		<div data-role="content">
+			<div>
+				<div style = "color:red" id = "assign_error" class="alert alert-error">All data are required</div>
+				<form action="POST">
+				<input id = "request_key" type = "hidden" value = "{{request.key()}}">
+				<label style = "font-weight: bold;">Choose driver</label>
+					<select id = "assigned_driver" name = "assigned_driver" data-inline = "true" >
+						{% for driver in available_drivers %}
+						<option >{{driver.first_name}} {{driver.last_name}}</option>
+						{% endfor %}
+					</select>
+					<textarea id="acceptance_note" rows="" cols="" placeholder = "Additional information for client"></textarea>
+					<div class="ui-block-b">
+<!-- 						<input name = "option" data-role = "button" type = "submit" data-theme="a" value = "Assign Driver"> -->
+						  <a class="btn btn-small btn-info" style = "color: white;" name = "option" data-dismiss="modal" onclick = "assignDriver()">Assign Driver</a>
+						<a class="btn btn-small btn-info" style = "color: white" 
+									data-dismiss="modal" 
+									href="#dispatch-home" >Cancel</a>
+					</div>
+				</form>
+			</div>
+		</div>
+		<footer data-role="footer" data-position="fixed">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>
+	</div>
+	{% endfor %}
+	<!-- End of accept or decline modal message -->
+	
+	<!-- Begin add driver modal page -->
+	<div id="add_driver" data-role="dialog">
+		<div data-role="header" data-dismissible="false"
+			data-potision-to-window>
+			<h1>Add A Driver</h1>
+		</div>
+		<div data-role="content">
+			<div>
+				<div style = "color:red" id = "driver_error" class="alert alert-error">All data are required</div>
+				<form method="POST" >
+					<input id = "driver_first_name" type="text" name="driver_first" placeholder="First Name"></input>
+					<input id = "driver_last_name" type="text" name="driver_last" placeholder="Last Name"></input>
+					<input id = "driver_password" type="text" name="driver_password" placeholder="Password"></input>
+					<input id = "driver_p_number" type="text" name="driver_number" placeholder="Phone Number"></input>
+					
+					<div class="ui-block-b">
+<!-- 					<input type="submit" data-role="button" data-theme="a" value="ADD" name="theaction" id="theaction" onclick = "addDriver()"> -->
+						<div class="ui-block-b"><a href="" data-role="button" data-theme="a" onclick = "addDriver()">ADD</a></div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- End add driver modal page -->
+	
+	<!-- Begin adding driver confirmation-->
+		
+		<div id="driver_confirmation" data-role="dialog">
+			<div data-role="header" data-dismissible="false" data-potision-to-window><h1>Driver Added</h1></div>
+			<div data-role="content">
+				<div>
+					<p style="text-align:center">Driver added succesfully.</p>
+				</div>
+			</div>
+			<div class="ui-block-b"><a href="#dispatch-home" data-role="button" data-theme="a">OK</a></div>
+		</div>
+		<!-- End adding driver confirmation-->
+	
+
+	<!-- Begin Pending requests page -->
+	<div data-role="page" id="pending-requests">
+		<header data-role="header">
+			<h1>ACS Dashboard</h1>
+		</header>
+		<div data-role="content" class="span10" style="margin: auto">
+
+			<div class="pass_details" data-role="collapsible-set"
+				data-inset="true">
+				<div class="nav-header">Pending Request</div>
+				{% for request in pending_requests %}
+
+				<div data-role="collapsible" data-mini="true" data-inset="true">
+					<span class="span2"><img alt=""
+						src="/img?img_key={{request.passenger.key()}}" width="150px"
+						height="200px"></span>
+					<h3>{{request.passenger.first_name}}
+						{{request.passenger.last_name}}</h3>
+					<span> <label>Current Location: </label>{{request.current_location}}
+					</span><br> <span> <label>Destination: </label>{{request.destination}}
+					</span><br> <span> <label>Pick Up Time: </label>{{request.pickup_time}}
+					</span><br> <span> <label>Other Info: </label>{{request.other_info}}
+					</span>
+				</div>
+				{% endfor %}
+
+			</div>
+			<footer data-role="footer" data-position="fixed">
+				<h3>&copy 2013 Accra Cab Services</h3>
+			</footer>
+		</div>
+	</div>
+	<!-- End Pending requests page -->
+
+	<!-- Begin Active requests page -->
+	<div data-role="page" id="active-requests">
+		<header data-role="header">
+			<h1>ACS Dashboard</h1>
+		</header>
+		<div data-role="content" class="span10" style="margin: auto">
+
+			<div class="pass_details" data-role="collapsible-set"
+				data-inset="true"></div>
+			<footer data-role="footer" data-position="fixed">
+				<h3>&copy 2013 Accra Cab Services</h3>
+			</footer>
+		</div>
+	</div>
+	<!-- End Active requests page -->
+
+	<!-- Begin Completed requests page -->
+	<div data-role="page" id="completed-requests">
+		<header data-role="header">
+			<h1>ACS Dashboard</h1>
+		</header>
+		<div data-role="content" class="span10" style="margin: auto">
+
+			<div class="pass_details" data-role="collapsible-set"
+				data-inset="true"></div>
+			<footer data-role="footer" data-position="fixed">
+				<h3>&copy 2013 Accra Cab Services</h3>
+			</footer>
+		</div>
+	</div>
+	<!-- End Completed requests page -->
+
+	<!-- Begin Feedback requests page -->
+	<div data-role="page" id="feedback">
+		<header data-role="header">
+			<a style = "margin-top: 10px;" href="#dispatch-home" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
+			<h1>ACS Dashboard</h1>
+		</header>
+		<div data-role="content" class="span10" style="margin: auto">
+
+			<ul data-role="listview" data-inset="true">
+                {% for feedback in feedbacks %}
+                	<li>
+                		<div style = "display: inline">{{feedback.passenger.first_name}} {{feedback.passenger.last_name}}</div>
+                		<div><label>Price Rating:</label>{{feedback.price_rating}}</div>
+                		<div><label>Punctuality Rating:</label>{{feedback.punctuality_rating}}</div>
+                		<div><label>Price Rating:</label>{{feedback.price_rating}}</div>
+                	</li>
+                	{% endfor %}
+                
+            </ul>
+			
+		</div>
+		
+		<footer data-role="footer" data-position="fixed">
+				<h3>&copy 2013 Accra Cab Services</h3>
+			</footer>
+	</div>
+	<!-- End Feedback requests page -->
+
+	<script type="text/javascript" src="/js/jquery.js"></script>
+	<script src="/js/jquery-1.9.1.min.js"></script>
+	<script src="/js/jquery.mobile-1.3.1.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/user.js"></script>
+	<script type="text/javascript" src="/js/helpful.js"></script>
+</body>
+</html>

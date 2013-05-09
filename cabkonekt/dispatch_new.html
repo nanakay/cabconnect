@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+	<title>Accra Cab Services</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 	
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="jquery.mobile-1.3.1.min.css">
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+	<script src="jquery-1.9.1.min.js"></script>
+	<script src="jquery.mobile-1.3.1.min.js"></script>	
+
+</head>
+<body>
+	<div data-role="page" id="welcome">
+	<div data-role="header" class="navbar navbar-inverse">
+		<h1>ACS Web Dashboard</h1>	
+	</div>
+	<div data-role="content">
+		<div>
+			<img src="./img/ACS%20LOGO.png" style="height:100%; width:100%;">
+		</div>
+		<div>
+			<form style="width:40%;">
+			<input type="text" name="admin" placeholder="Admin">
+			<input type="password" name="admin-passwrd" placeholder="Password">
+			<a href="#dispatch-home" data-role="button" data-transition="slide" data-theme="b">Log In</a>
+			</form>
+		</div>
+		<footer data-role="footer">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>	
+	</div>
+	</div>
+
+<!--Dashboard/Home-->
+	<div data-role="page" id="dispatch-home">
+		<header data-role="header" class="navbar navbar-inverse">
+		<nav data-role="navbar" >
+			<ul>
+			<li><a href="#start-page" class="ui-btn-active ui-state-persist" data-icon="home"></a></li>	
+		</header>
+		<div data-role="content" class="container-fluid">
+		<div class="row-fliud">	
+			<div class="span2" >
+				<!-- <li class='divider'></li> -->
+				<li class="nav-header">Client</li>
+				<!-- <li class='divider'></li> -->
+				<ul class="nav nav-tabs nav-stacked">
+				<li><a href="#pending-requests">Pending Requests</a></li>
+				<li><a href="#active-request">Active Requests</a></li>
+				<li><a href="#completed-request">Completed Requests</a></li>
+				<li><a href="#schedule">Schedule</a></li>
+				<li><a href="feedback">Feedback</a></li>
+				<li class='divider'></li>
+				<li class="nav-header">Driver</li>
+				<li class='divider'></li>
+				<li><a href="">Active</a></li>
+				<li><a href="">Avaliable</a></li>
+				</ul>
+			</div>
+			<div class="span10" class="row">
+				<div class="span5">
+					<ul>
+					<li class="nav-header">Pending Request</li>
+					<div id="pending-requests">
+					<ul data-role="listview" data-role="collapsible" data-inset="true">
+
+						<li data-role="divider" data-theme="a">Tuesday, April 30</li>
+						
+						<li>
+							<div data-role="collapsible-set" data-inset="true">
+
+								<div data-role="collapsible" data-mini="true" data-inset="true">
+								<h3>Christian Osei Bonsu</h3>
+								<p>Location: Pent Hostel</p>
+								<p>Destination: Mest</p>
+								<p>Date: Wed, 1st May, 2013</p>
+								<p>Time: 2:00 PM</p>
+								<p>Other info: I have an appointment at 2:30 and need to be there 10mins ahead. </p>
+								</div>
+								
+								<div data-role="collapsible" data-mini="true" data-inset="false">
+								<h3>Adelaide Atakora</h3>
+								<p>Location: Lizzy Sport Comlex</p>
+								<p>Destination: Airport</p>
+								<p>Date: Wed, 2nd May, 2013</p>
+								<p>Time: 3:00 PM</p>
+								<p>Other info: I need to check in at 4:00 and I've got just under 500lb of luggage. </p>
+								</div>
+
+								<div data-role="collapsible" data-mini="true" data-inset="false">
+								<h3>Noah Fontes</h3>
+								<p>Location: MEST</p>
+								<p>Destination: ETS Drama Studio</p>
+								<p>Date: Wed, 2nd May, 2013</p>
+								<p>Time: 3:00 PM</p>
+								<p>Other info: I need to get a front seat so get me there on time. </p>
+								</div>
+
+	
+							</div>
+
+						</li>
+					</ul>	
+					</div>
+
+
+
+				</div>
+				<div class="span4">
+					<div>
+						
+					<li class="nav-header">Active Drivers</li>
+						<div data-role="collapsible">
+						</div>
+					</div>
+					<li class="nav-header">Available Drivers</li>
+					
+						</div>
+					</div>
+
+				</div>
+			</div>	
+		</div>
+		</div>
+		<footer data-role="footer">
+			<h3>&copy 2013 Accra Cab Services</h3>
+		</footer>
+	</div>
+</body>
+</html>

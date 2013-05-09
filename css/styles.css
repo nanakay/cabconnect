@@ -1,0 +1,13 @@
+.pass_details label {
+	width: 150px;
+	font-weight: bold;
+	display: inline-block;
+}
+
+#success {
+	margin-top: 48%;
+}
+
+a:hover, a:active {
+	text-decoration: none;
+}
