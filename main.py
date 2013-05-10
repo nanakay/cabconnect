@@ -178,10 +178,7 @@ class DriverHome(Handler):
             driver_name = self.request.get("driver_name")
             driver = Driver.gql("WHERE first_name = :1", driver_name).get()
             message = self.request.get("message")
-            new_connection = Connected(passenger=passenger, driver=driver, location=request.current_location,
-                destination=request.destination,
-                message=message)
-            new_connection.put()
+            
             request.processed = True
             self.redirect("/home")
 
@@ -429,9 +426,9 @@ def get_time(time_object):
  
 def history_toJson(requests):
     
-    history_obj = {}
+    history = []
     for request in requests:
-        history = []
+        history_obj = {}
         history_obj['request_date'] = get_date(request.created)
         history_obj['request_location'] = request.location
         history_obj['request_destination'] = request.destination
@@ -444,8 +441,7 @@ def history_toJson(requests):
 
         history.append(history_obj)
 
-    history_json = json.dumps(history)
-    return history_json
+    return json.dumps(history)
 
 class AdminCars(Handler):
     def get(self):
@@ -457,12 +453,12 @@ class HistoryHandler(Handler):
         passenger = Passenger.gql("WHERE phone_number = :1", phone_number).get()
 
         requests = Passenger_Request.gql("WHERE passenger = :1", passenger)
-        history = history_toJson(requests)
-        logging.info("This is history in json " + history)
-        if history is None:
+#         history = history_toJson(requests)
+#         logging.info("This is history in json " + history)
+        if history_toJson(requests) is None:
             self.write("empty")
         else:
-            self.write(history)
+            self.write(history_toJson(requests))
 
 class FeedbackHandler(Handler):
     def post(self):
@@ -484,29 +480,27 @@ class FeedbackHandler(Handler):
         self.write("successful")
         
 def update_attribute(transaction):
-    for entity in transaction:
-        entity.viewed = True
-        entity.put()
+    for e in transaction:
+        e.viewed = True
+        e.put()
  
 def new_toJson(transactions):
     update_obj = []
-     
     for entity in transactions:
         entity_obj = {}
         entity_obj["passenger"] = entity.passenger.first_name + " " + entity_obj.passenger.last_name
         entity_obj["location"] = entity.request.location
         entity_obj["destination"] = entity.request.destination
         entity_obj["location"] = entity.request.location
-        entity_obj["from_date"] = entity.request.from_date
-        entity_obj["to_date"] = entity.request.to_date
-        entity_obj["pickup_time"] = entity.request.pickup_time
-        entity_obj["to_time"] = entity.request.to_time
+        entity_obj["from_date"] = get_date(entity.request.from_date)
+        entity_obj["to_date"] = get_date(entity.request.to_date)
+        entity_obj["pickup_time"] = get_time(entity.request.pickup_time)
+        entity_obj["to_time"] = get_time(entity.request.to_time)
         entity_obj["driver"] = entity.driver.first_name + " " + entity_obj.driver.last_name
         
         update_obj.append(entity_obj)
-    
-    json_update = json.dumps(update_obj)
-    return json_update
+#     json_update = json.dumps(update_obj)
+    return json.dumps(update_obj)
 
 class AssignDriver(Handler):
     def get(self):
@@ -537,13 +531,14 @@ class UpdateHandler(Handler):
         phone_number = self.request.get("phone_number")
         passenger = Passenger.gql("WHERE phone_number = :1", phone_number)
         
-        newTransactions = Transaction.gql("WHERE passenger = :1 AND viewed = False", passenger)
+        newTransactions = Transaction.gql("WHERE passenger = :1", passenger)
         
-        if newTransactions:
+        if newTransactions is not None:
             update_attribute(newTransactions)
-            
-            json_obj = new_toJson(newTransactions)
-            self.write(json_obj)
+
+            logging.info(newTransactions)
+#             json_obj = new_toJson(newTransactions)
+            self.write(new_toJson(newTransactions))
         else:
             self.write("empty")
 
@@ -604,5 +599,5 @@ app = webapp2.WSGIApplication([
     ('/admin_cars', AdminCars),
     ('/history', HistoryHandler),
     ('/feedback', FeedbackHandler),
-    ('update', UpdateHandler)
+    ('/update', UpdateHandler)
 ], debug=True)
