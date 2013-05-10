@@ -5,8 +5,6 @@ function init() {
 //  var autocomplete = new google.maps.places.Autocomplete(input);
 
  // autocomplete.bindTo('bounds', map);
-	var input = document.getElementById('request_location');
-	var input2 = document.getElementById('request_destination');
 	var reserve_input = document.getElementById('reserve_location');
     var reserve_input2 = document.getElementById('reserve_destination');
 	
@@ -14,8 +12,6 @@ function init() {
 	componentRestrictions: {country: 'gh'}
 	};
 
-	autocomplete = new google.maps.places.Autocomplete(input, options);
-	autocomplete = new google.maps.places.Autocomplete(input2, options);
 	autocomplete = new google.maps.places.Autocomplete(reserve_input, options);
     autocomplete = new google.maps.places.Autocomplete(reserve_input2, options);
 	

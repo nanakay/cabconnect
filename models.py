@@ -124,7 +124,6 @@ class Passenger_Request(db.Model):
     location = db.StringProperty(required = True)
     destination = db.StringProperty(required = True)
     other_info = db.TextProperty()
-    assigned_driver = db.ReferenceProperty(Driver)
     from_date = db.DateTimeProperty(required = True)
     to_date = db.DateTimeProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
@@ -134,12 +133,10 @@ class Passenger_Request(db.Model):
     total_passengers = db.StringProperty()
     
 
-class Connected(db.Model):
+class Transaction(db.Model):
     passenger = db.ReferenceProperty(Passenger)
     driver = db.ReferenceProperty(Driver)
-    location = db.StringProperty(required = True)
-    destination = db.StringProperty(required = True)
-    price = db.StringProperty()
+    request = db.ReferenceProperty(Passenger_Request)
     message = db.TextProperty()
     viewed = db.BooleanProperty(default = False)
 

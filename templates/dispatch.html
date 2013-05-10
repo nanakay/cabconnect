@@ -89,7 +89,7 @@
 													<label>Destination: </label>{{request.destination}}
 												</p>
 												<p>
-													<label>Pick Up Time: </label>{{request.pickup_time}}
+													<label>Pick Up Time: </label>{{request.pickup_time.strftime("%H : %M")}}
 												</p>
 												<p>
 													<label>Other Info: </label>{{request.other_info}}

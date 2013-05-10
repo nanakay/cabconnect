@@ -157,8 +157,7 @@
 
         <div>
             <ul data-role="listview" data-inset="true">
-                <li ><a href="#request-cab"><img src="img/requestcab.png" class="ui-li-thumbnail"> Request a Cab</a></li>
-                <li><a href="#reserve-cab"><img src="img/bookcab.png" class="ui-li-thumbnail">Reserve a Cab</a></li>
+                <li><a href="#request-cab"><img src="img/requestcab.png" class="ui-li-thumbnail"> Request a Cab</a></li>
                 <li><a href="#check-history"><img src="img/history.png" class="ui-li-thumbnail">Check Transactions</a></li>
                 <li><a href="#feedback"><img src="img/feedback.jpg" class="ui-li-thumbnial">Feedback</a></li>
                 <li><a href="#services"><img src="img/services.jpg" class="ui-li-thumbnial">Services</a></li>
@@ -185,30 +184,40 @@
 				<div style="color: red" id="request_error" class="alert alert-error">Incomplete
 					details provided</div>
 				<h2>Requests</h2>
-				<form method="post">
-					<input id="request_location" type="text" name="location"placeholder="location"></input> 
-					<input id="request_destination" type="text" name="destination" placeholder="destination"></input>
-					<input name="mydate" id="pickup_time" type="time" data-role="datebox" placeholder="What time do you want to leave?"
-						data-options='{"mode": "timeflipbox"}'>
-					<!-- 					<input id = "pickup_time" type="text" name="time" placeholder="Time of Pick up"></input> -->
-					<!-- 					<input id="timeframe" type="text" name="timeframe" -->
-					<!-- 						placeholder="For how long?" style="width: 50%"></input> <select -->
-					<!-- 						id="timeframe_option" -->
-					<!-- 						style="display: inline; width: 50%; float: right;"> -->
-					<!-- 						<option value="minutes">Minutes</option> -->
-					<!-- 						<option value="hours">Hours</option> -->
-					<!-- 					</select> -->
-					<textarea id="other_info" name="textarea" id="textarea" placeholder="Any additional details for driver to find you"></textarea>
-					<fieldset class="ui-grid-a">
-						<div class="ui-block-a">
-							<a id="request_btn" href="" data-role="button" data-theme="b"
-								onclick="requestCab()">Send Request</a>
-						</div>
-						<div class="ui-block-b">
-							<a href="#start_page" data-role="button" data-theme="a">Cancel</a>
-						</div>
-					</fieldset>
-				</form>
+				<form method="post" style="color: #a9a9a9" class="ui-hide-label">
+            <label for="reserve_location">Location</label>
+            <input id="reserve_location" type="text" name="location" placeholder="location">
+
+            <label for="reserve_destination">Destination</label>
+            <input id="reserve_destination" type="text" name="destination" placeholder="destination">
+
+            <label for="from_date">Pickup date</label>
+            <input  name="pickupdate" id="from_date" type="date" data-role="datebox" placeholder="pickup date"
+                    data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useClearButton": true, "useCollapsedBut": true}'>
+
+            <label for="to_date">Return date</label>
+            <input name="returndate" id="to_date" type="date" data-role="datebox" placeholder="return date"
+                   data-options='{"mode": "calbox", "afterToday": true, "useFocus": true, "useClearButton": true, "useCollapsedBut": true}'>
+
+            <label for="reserve_pickup_time">Pickup time</label>
+            <input name="pickuptime" id="reserve_pickup_time" type="time" data-role="datebox" placeholder="pickup time"
+                   data-options='{"mode": "timeflipbox", "useClearButton": true, "useCollapsedBut":true, "useFocus":true}'>
+
+            <label for="reserve_to_time">Return time</label>
+            <input name="returntime" id="reserve_to_time" type="time" data-role="datebox" placeholder="return time"
+                   data-options='{"mode": "timeflipbox", "useClearButton": true, "useCollapsedBut":true, "useFocus":true}'>
+
+            <label for="total_passengers">Total passengers</label>
+            <input id="total_passengers" type="text" name="total_passengers" placeholder="how many are you">
+
+            <label for="textarea">Other info</label>
+            <textarea name="textarea" id="reserve_other_info" placeholder="Any additional details or information"  style="height: 100px"></textarea>
+
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><a href="" data-role="button" data-theme="b" onclick="requestCab()">Send Request</a></div>
+                <div class="ui-block-b"><a href="#start_page" data-role="button" data-theme="a">Cancel</a></div>
+            </fieldset>
+        </form>
 
 
 				<div data-role="collapsible">
@@ -258,7 +267,7 @@
 
 	
 	<!--Check History-->
-	<div data-role="page" id="check-history">
+	<div data-role="page" id="check-history"  onload = "checkHistory()">
 		<header data-role="header" data-theme="b">
         <a href="#start_page" data-icon="arrow-l" data-theme="c" data-mini="true">Back</a>
         <h1>Check Transaction</h1>
@@ -268,6 +277,7 @@
 		<div data-role="content">
 			<div id = "history_content">
             <ul id = "history_list" data-role="listview" data-inset="true">
+            <li data-role="divider" data-theme="a">History of request transactions</li>
                 
             </ul>
         </div>

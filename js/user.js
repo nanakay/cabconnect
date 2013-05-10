@@ -23,9 +23,8 @@ function initAll() {
     //	
     var signup_btn = getById("signup_btn");
     signup_btn.onclick = createUser;
-
-    // var a = getById("request_btn").onclick = requestCab();
-
+    
+    setInterval(checkHistory, 5000);
 }
 
 function verify_user(evt) {
@@ -57,7 +56,7 @@ function verify_user(evt) {
 
                     window.location.replace(passenger_url);
                     // window.location.href = passenger_url;
-                    checkHistory();
+//                    checkHistory();
                 }
             }
         }
@@ -216,7 +215,7 @@ function requestCab() {
             && to_time && passengers) {
         xhttp.onreadystatechange = function() {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-                // alert(xhttp.readyState + " " + xhttp.status)
+                 alert(xhttp.readyState + " " + xhttp.status)
                 var resp = xhttp.responseText;
                 alert(resp);
                 if (resp === "successful") {
@@ -225,6 +224,7 @@ function requestCab() {
                             .lastIndexOf("#"))
                             + "#request-confirmation";
                     window.location.href = passenger_url;
+                    setInterval(getUpdates, 10000);
                 } else {
                     var error = "Please check your internet connection";
                     getError("request_error", error)
@@ -242,7 +242,7 @@ function requestCab() {
         xhttp.send();
     } else {
         var error = "Some required data have not been provided";
-        getError("reserve_error", error);
+        getError("request_error", error);
     }
 
 }
@@ -257,7 +257,7 @@ function getError(elId, error) {
 function checkHistory() {
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            // alert(xhttp.readyState + " " + xhttp.status)
+//             alert(xhttp.readyState + " " + xhttp.status)
             var resp = xhttp.responseText;
             if (resp != "empty") {
                 var current_url = window.location.href;
@@ -265,21 +265,18 @@ function checkHistory() {
                         .lastIndexOf("#"))
                         + "#check-history";
 
-                window.console.log(resp);
                 var history = JSON.parse(resp);
-                alert(history);
-                history_elem = getById("history_list");
+                var data = "";
+                var history_elem = getById("history_list");
                 for ( var i = 0; i < history.length; i++) {
 
-                    createHistoryElements(history[i].request_date,
-                            history[i].request_location,
-                            history[i].request_destination, history[i].status)
+                    data += "<li><p>You requested for a cab on " + history[i].request_date + "</p><br>" + "<label>From:</label>" + history[i].request_location
+                    		+ "<br><label>To:</label>" + history[i].request_destination + "</li>";
 
                 }
+                window.console.log(data);
+                history_elem.innerHTML = data;
 
-                // history_elem.innerHTML = history[0].request_location;
-
-                // window.location.href = passenger_url;
             } else {
                 history_elem = getById("history_list");
                 var list_member = document.createElement("li");
@@ -298,23 +295,9 @@ function checkHistory() {
 }
 
 function createHistoryElements(date, location, destination, status) {
-    var history_elem = getById("history_list");
-    var list_member = document.createElement("li");
-    // var aTag = document.createElement("a");
-    // aTag.setAttribute("href", "#");
-
-    var par = document.createElement("p");
-    var data = document.createTextNode("You requested for a cab on " + date);
-
-    par.appendChild(data);
-    var brk = document.createElement("br");
-    par.appendChild(brk);
-    var another_data = document.createTextNode("From " + location + " to "
-            + destination)
-    par.appendChild(another_data);
-
-    list_member.appendChild(par);
-    history_elem.appendChild(list_member);
+    var data = "<li><p>You requested for a cab on " + date + "</p><br>" + "<label>From:</label>" + location
+    		+ "<label>To:</label>" + destination + "</li>";
+    return data;
 }
 
 function sendFeedback() {
@@ -376,6 +359,28 @@ function getRateValue(name) {
     return value;
 }
 
-function playBeep() {
-    navigator.notification.beep(3);
+function getUpdates() {
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            // alert(xhttp.readyState + " " + xhttp.status)
+            var resp = xhttp.responseText;
+            alert(resp);
+            if (resp != "empty") {
+//                var current_url = window.location.href;
+//                var passenger_url = current_url.substring(0, current_url
+//                        .lastIndexOf("#"))
+//                        + "#request-confirmation";
+//                
+//                window.location.href = passenger_url;
+                setInterval(getUpdates, 10000);
+            } else {
+                var error = "Please check your internet connection";
+                getError("request_error", error)
+            }
+
+        }
+    }
+    var url = 'http://cabkonekt.appspot.com/update?phone_number=' + number.value;
+    xhttp.open('POST', url, true);
+    xhttp.send();
 }

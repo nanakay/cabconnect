@@ -308,8 +308,11 @@ class Request(Handler):
             request = Passenger_Request(passenger=passenger, location=location, destination=destination, from_date=from_date, to_date=to_date,
                 pickup_time=pickup_time, to_time=to_time, total_passengers=total_passengers, other_info=other_info)
             
-            request.put()
-            self.write("successful")
+            if request:
+                request.put()
+                self.write("successful")
+            else:
+                self.write("It failed")
                   
             
 class AdminHandler(Handler):
@@ -376,9 +379,10 @@ def get_time(time_object):
     return time_object.strftime("%H : %M")
  
 def history_toJson(requests):
-    history = []
+    
     history_obj = {}
     for request in requests:
+        history = []
         history_obj['request_date'] = get_date(request.created)
         history_obj['request_location'] = request.location
         history_obj['request_destination'] = request.destination
@@ -424,6 +428,46 @@ class FeedbackHandler(Handler):
         feedback.put()
         
         self.write("successful")
+        
+def update_attribute(transaction):
+    for entity in transaction:
+        entity.viewed = True
+        entity.put()
+ 
+def new_toJson(transactions):
+    update_obj = []
+     
+    for entity in transactions:
+        entity_obj = {}
+        entity_obj["passenger"] = entity.passenger.first_name + " " + entity_obj.passenger.last_name
+        entity_obj["location"] = entity.request.location
+        entity_obj["destination"] = entity.request.destination
+        entity_obj["location"] = entity.request.location
+        entity_obj["from_date"] = entity.request.from_date
+        entity_obj["to_date"] = entity.request.to_date
+        entity_obj["pickup_time"] = entity.request.pickup_time
+        entity_obj["to_time"] = entity.request.to_time
+        entity_obj["driver"] = entity.driver.first_name + " " + entity_obj.driver.last_name
+        
+        update_obj.append(entity_obj)
+    
+    json_update = json.dumps(update_obj)
+    return json_update
+        
+class UpdateHandler(Handler):
+    def get(self):
+        phone_number = self.request.get("phone_number")
+        passenger = Passenger.gql("WHERE phone_number = :1", phone_number)
+        
+        newTransactions = Transaction.gql("WHERE passenger = :1 AND viewed = False", passenger)
+        
+        if newTransactions:
+            update_attribute(newTransactions)
+            
+            json_obj = new_toJson(newTransactions)
+            self.write(json_obj)
+        else:
+            self.write("empty")
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -438,5 +482,6 @@ app = webapp2.WSGIApplication([
     ('/request', Request),
     ('/admin', AdminHandler),
     ('/history', HistoryHandler),
-    ('/feedback', FeedbackHandler)
+    ('/feedback', FeedbackHandler),
+    ('update', UpdateHandler)
 ], debug=True)
