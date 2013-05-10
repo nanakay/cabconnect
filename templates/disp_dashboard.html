@@ -135,7 +135,7 @@
                     {#                    request1#}
                     {% for request in holder %}
                         {% if not request.kind() == 'Driver' %}
-                            <a href="#{{request.key()}}" class="callModal"><div class="message info grid_5">
+                            <a href="#{{request.key()}}" class="callModal"><div class="message info grid_5 maintainheight">
                                 <span class="textheader">{{request.passenger.first_name}}  {{request.passenger.last_name}}</span>
                                 <div>
                                     <p>Location: {{request.current_location}}</p>
@@ -215,11 +215,27 @@
     </form>
 </div>
 
+
+<div id="assignDriver" class="hide">
+    <form class="formoid-default form greenbg"title="addAdmin" method="post">
+        <span class="modal_close float-right">x</span>
+        <div class="element-text" ><h2 class="title">Assign Driver</h2></div>
+        <div class="element-email"  title="Choose an available driver">
+            <label class="title">First Name<span class="required">*</span></label>
+            <input type="text" name="admin_first_name" value="" required="required"/></div>
+
+        <div class="element-textarea" ><label class="title">Any Additional Information</label>
+            <textarea name="driver_info" cols="20" rows="5" draggable="false"></textarea></div>
+        <div class="element-submit" ><input type="submit" value="Add Admin" name="config"/></div>
+    </form>
+</div>
+
+
 {%  for request in holder %}
     {% if not request.kind() == 'Driver' %}
         <div id="{{request.key()}}" class="hide">
             <div class="formoid-default form greybg">
-                <span class="modal_close float-right">x</span>
+                <span class="modal_close float-right"><strong>X</strong></span>
                 {#        <div class="element-text" ><h2 class="title">Request from {{ chosen.first_name }} {{ chosen.last_name }}</h2></div>#}
                 <div class="element-text" ><h2 class="title">Request from  {{request.passenger.first_name}} {{request.passenger.last_name}}</h2></div>
                 <div class="">Created on: <span >{{ request.created }}</span></div>
@@ -257,7 +273,7 @@
 
                 <div class="prefix_2">
                     {% if request.status == "Pending" %}
-                        <a href="#" class="btn btn-green">Assign Driver</a>
+                        <a href="/admin_assign?requestkey={{request.key()}}" class="btn btn-green callModal">Assign Driver</a>
                     {% else %}
                         <a href="http://google.com" class="btn btn-green" onclick="return false">See Assigned Driver</a>
                     {% endif %}

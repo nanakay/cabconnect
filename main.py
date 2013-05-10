@@ -507,7 +507,31 @@ def new_toJson(transactions):
     
     json_update = json.dumps(update_obj)
     return json_update
-        
+
+class AssignDriver(Handler):
+    def get(self):
+        requestkey = self.request.get('requestkey')
+        request = db.get(requestkey)
+        availables = Driver.gql("WHERE available = True")
+        self.render('disp_assign.html', availables=availables, request=request)
+
+    def post(self):
+        message = self.request.get('message')
+        request = self.request.get('user')
+        fullnamedriver = self.request.get('driver')
+        first_name, last_name  = fullnamedriver.split(' ')
+        driver  = Driver.gql('WHERE first_name=:1 and last_name=:2', first_name, last_name)
+        request = db.get(request)
+#        action = self.request.get('assignment')
+#        if action == 'Assign Driver'
+        newTrans = Transaction.create_transaction(passenger=request.passenger,driver=driver,request=request,message=message,viewed=True)
+        if newTrans:
+            error = "Driver: "+ fullnamedriver+ " assigned to "+ request.passenger.first_name + " " + request.passenger.last_name
+            self.redirect('/admin_dashboard', error=error)
+        else:
+            error = "Driver not Assigned"
+            self.render('/admin_dashboard', error=error)
+
 class UpdateHandler(Handler):
     def get(self):
         phone_number = self.request.get("phone_number")
@@ -576,6 +600,7 @@ app = webapp2.WSGIApplication([
     ('/request', Request),
     ('/admin', AdminLogin),
     ('/admin_dashboard', AdminHandler),
+    ('/admin_assign', AssignDriver),
     ('/admin_cars', AdminCars),
     ('/history', HistoryHandler),
     ('/feedback', FeedbackHandler),

@@ -60,8 +60,8 @@ class Utilities(db.Model):
 class Passenger(db.Model):
     first_name = db.StringProperty(required=True)
     last_name = db.StringProperty(required=True)
-    password = db.TextProperty(required=True)
-    phone_number = db.StringProperty(required=True)
+    password = db.TextProperty(required=False)
+    phone_number = db.StringProperty(required=False)
     email = db.EmailProperty()
     picture = db.BlobProperty()
     salt = db.StringProperty()
@@ -104,7 +104,7 @@ class Driver(db.Model):
     first_name = db.StringProperty(required=True)
     last_name = db.StringProperty(required=True)
     phone_number = db.StringProperty(required=True)
-    password = db.StringProperty(required=True)
+    password = db.StringProperty(required=False)
     picture = db.BlobProperty()
     available = db.BooleanProperty(default=True)
     salt = db.StringProperty()
@@ -126,14 +126,14 @@ class Driver(db.Model):
 
 class Passenger_Request(db.Model):
     passenger = db.ReferenceProperty(Passenger)
-    location = db.StringProperty(required=True)
-    destination = db.StringProperty(required=True)
+    location = db.StringProperty(required=False)
+    destination = db.StringProperty(required=False)
     other_info = db.TextProperty()
     assigned_driver = db.ReferenceProperty(Driver)
-    from_date = db.DateTimeProperty(required = True)
-    to_date = db.DateTimeProperty(required = True)
+    from_date = db.DateTimeProperty(required = False)
+    to_date = db.DateTimeProperty(required = False)
     created = db.DateTimeProperty(auto_now_add = True)
-    pickup_time = db.DateTimeProperty(required = True)
+    pickup_time = db.DateTimeProperty(required = False)
     to_time = db.DateTimeProperty()
     status = db.StringProperty(default="Pending")
     total_passengers = db.StringProperty()
@@ -147,20 +147,16 @@ class Passenger_Request(db.Model):
 class Transaction(db.Model):
     passenger = db.ReferenceProperty(Passenger)
     driver = db.ReferenceProperty(Driver)
-    location = db.StringProperty(required=True)
-    destination = db.StringProperty(required=True)
-    price = db.StringProperty()
+    request = db.ReferenceProperty(Passenger_Request)
     message = db.TextProperty()
     viewed = db.BooleanProperty(default=False)
 
-class Transaction(db.Model):
-    passenger = db.ReferenceProperty(Passenger)
-    driver = db.ReferenceProperty(Driver)
-    request = db.ReferenceProperty(Passenger_Request)
-    message = db.TextProperty()
-    request = db.ReferenceProperty(Passenger_Request)
-    message = db.TextProperty()
-    viewed = db.BooleanProperty(default = False)
+    @classmethod
+    def create_transaction(cls,passenger,driver,request,message,viewed):
+        newTransaction = Transaction(passenger=passenger, driver=driver,
+            request=request,message=message,viewed=viewed)
+        newTransaction.put()
+        return True
 
 class Admin(db.Model):
     first_name = db.StringProperty(required=True)
