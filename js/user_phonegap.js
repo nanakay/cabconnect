@@ -55,7 +55,7 @@ function verify_user(evt) {
                     el.style.display = "block";
 //	              login_btn.href = passenger_url;
 //	              alert(login_btn.href);
-//	              if (current_url == "file:///android_asset/www/index.html#login") {
+//	              if (current_url == "file:///android_asset/www/disp-login.html#login") {
 //	                    login_btn.click();
 ////	                    alert("true");
 //	                }

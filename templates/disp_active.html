@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Dashboard | Accra Cab Admin</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css" media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../css/text.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../css/grid.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../css/layout.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../css/nav.css" media="screen" />
+    <link rel="stylesheet" href="../css/form.css" type="text/css" />
+
+
+    <script src="../js/jquery.js" type="text/javascript"></script>
+    <script src="../js/jquery-ui/jquery-ui.js"></script>
+    <script src="../js/jquery.leanModal.min.js"></script>
+
+    <script>
+        $(function() {
+            $( "#accordion" ).accordion({
+                heightStyle: "content",
+                collapsible: true
+            });
+            $(".callModal").leanModal({
+                top : 20,
+                left: 200,
+                overlay : 0.8,
+                closeButton: ".modal_close" });
+        });
+
+    </script>
+
+</head>
+<body id="thebluebg">
+<div class="container_12">
+    <div class="grid_12 header-repeat">
+        <div id="branding">
+            <div class="floatleft">
+                <img src="../img/ACS_LOGO.png" alt="Logo"></div>
+            <div class="floatright">
+                <div class="floatleft">
+                    <img src="../css/img/img-profile.jpg" alt="Profile Pic" /></div>
+                <div class="floatleft marginleft10">
+                    <ul class="inline-ul floatleft">
+                        <li>Hello Admin</li>
+                        <li><a href="/admin">Logout</a></li>
+                    </ul>
+                    <br />
+                    {#                    <span class="small grey">Last Login: 3 hours ago</span>#}
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="grid_12">
+        <ul class="nav main">
+            <li class="ic-dashboard"><a href="#"><span>Dashboard</span></a> </li>
+            <li class="ic-charts"><a href="#"><span>Check Transactions</span></a></li>
+            <li class="ic-grid-tables"><a href="/admin_cars"><span>View Cars</span></a></li>
+            <li class="ic-notifications"><a href="javascript:"><span>Config</span></a>
+                <ul>
+                    <li><a href="#newDriver" class="callModal">Add Driver</a> </li>
+                    <li><a href="#newAdmin" class="callModal">Add Admin</a> </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="clear">
+    </div>
+
+    <div class="grid_2">
+        <div class="box sidemenu">
+            <div class="block" id="accordion">
+                <h3>Request</h3>
+                <div>
+                    <li><a href="#">Pending</a></li>
+                    <li><a href="#"></a>Active</li>
+                    <li><a href="#"></a>Completed</li>
+                </div>
+                <h3>Schedules</h3>
+                <div>
+                    <p>
+                    <li><a href="#">Driver Salary</a></li>
+                    <li><a href="#"></a>Client Notifications</li>
+                    <li><a href="#"></a>Car Maintenance</li>
+                    </p>
+                </div>
+                <h3>Feedback</h3>
+                <div>
+                    <p>
+                    <li><a href="#">User</a></li>
+                    <li><a href="#"></a>Driver</li>
+                    <li><a href="#"></a>Company</li>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid_10">
+        <div class="box round">
+            <h2>
+                Figures</h2>
+            <div class="block prefix_3">
+                <div class="stat-col grid_2">
+                    <span>Current Pending</span>
+                    <p class="purple prefix_4">
+                        <img src="../css/img/icon-direction.png" alt="" />&nbsp;{{pending_requests.count()}}</p>
+                </div>
+                <div class="stat-col grid_2">
+                    <span>Current Active</span>
+                    <p class="yellow prefix_3">
+                        <img src="../css/img/icon-notifications.png" alt="" />&nbsp;{{ active_requests.count() }}</p>
+                </div>
+                <div class="stat-col grid_2">
+                    <span>Available Drivers</span>
+                    <p class="green prefix_3">
+                        <img src="../css/img/icon-gallery.png" alt="" />&nbsp;{{ available_drivers.count() }}</p>
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+        </div>
+        <div class="box round first grid_12">
+            <h2>Requests</h2>
+            <div class="box grid_12 textdetails ">
+                <div class="pushleft80">
+                    {#                    request1#}
+                    {% for request in pending_requests %}
+                        <div class="message info grid_5">
+                            <span class="textheader">{{request.passenger.first_name}}  {{request.passenger.last_name}}</span>
+                            <div>
+                                <p>Location: {{request.current_location}}</p>
+                                <p>Destination: {{request.destination}}</p>
+                            </div>
+                            <div>
+                                <p>Time: {{request.pickup_time}}</p>
+                                <p>Date: 10/12/2013</p>
+                            </div>
+                            <div>Other Details: {{request.other_info}}</div>
+                        </div>
+                    {% endfor %}
+                    {#                    request2#}
+                    {#end of request#}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="newDriver" class="hide">
+    <form class="formoid-default form"title="addDriver" method="post">
+        <div class="element-text" ><h2 class="title">Add New Driver</h2></div>
+        <div class="element-email"  title="Driver First Name">
+            <label class="title">First Name<span class="required">*</span></label>
+            <input type="email" name="driver_first_name" value="" required="required"/></div>
+        <div class="element-input"  title="Driver's Last Name">
+            <label class="title">Last Name<span class="required">*</span></label>
+            <input type="text" name="driver_last_name" required="required"/></div>
+        <div class="element-input"  title="Driver's Password">
+            <label class="title">Password<span class="required">*</span></label>
+            <input type="password" name="driver_password" required="required"/></div>
+        <div class="element-input"  title="Driver's Phone Number">
+            <label class="title">Phone Number<span class="required">*</span></label>
+            <input type="text" name="driver_p_number" required="required"/></div>
+        <div class="element-file"  title="Picture of Driver">
+            <label class="title">Picture</label><input type="file" name="picture" /></div>
+        <div class="element-textarea" ><label class="title">Any Additional Information</label>
+            <textarea name="driver_info" cols="20" rows="5" draggable="false"></textarea></div>
+        <div class="element-submit" ><input type="submit" value="Add Driver" name="option"/></div>
+    </form>
+</div>
+<div class="clear"></div>
+<div id="newAdmin" class="hide">
+    <form class="formoid-default form"title="addAdmin" method="post">
+        <span class="modal_close float-right">x</span>
+        <div class="element-text" ><h2 class="title">Add New Administrator</h2></div>
+        <div class="element-email"  title="New Admin First Name">
+            <label class="title">First Name<span class="required">*</span></label>
+            <input type="email" name="admin_first_name" value="" required="required"/></div>
+        <div class="element-input"  title="New Admin Last Name">
+            <label class="title">Last Name<span class="required">*</span></label>
+            <input type="text" name="admin_last_name" required="required"/></div>
+        <div class="element-input"  title="New Admin Password">
+            <label class="title">Password<span class="required">*</span></label>
+            <input type="password" name="admin_password" required="required"/></div>
+        <div class="element-input"  title="New Admin Phone Number">
+            <label class="title">Phone Number<span class="required">*</span></label>
+            <input type="text" name="admin_p_number" required="required"/></div>
+        <div class="element-file"  title="Picture of Admin">
+            <label class="title">Picture</label><input type="file" name="picture" /></div>
+        <div class="element-textarea" ><label class="title">Any Additional Information</label>
+            <textarea name="driver_info" cols="20" rows="5" draggable="false"></textarea></div>
+        <div class="element-submit" ><input type="submit" value="Add Admin" name="option"/></div>
+    </form>
+</div>
+<div class="clear">
+</div>
+<div class="clear">
+</div>
+<div id="site_info">
+    <p>
+        <a>&copy; 4Apps Solutions</a>. All Rights Reserved.
+    </p>
+</div>
+</body>
+</html>
