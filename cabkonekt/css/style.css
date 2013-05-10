@@ -1,49 +1,3 @@
-<<<<<<< HEAD
-body{
-    background-image: url("../img/Accracab.png");
-    color: #ffffff;
-    font-size: 20px;
-}
-
-.navbar-inner{
-    width: 100%;
-    padding: 5px;
-}
-
-.fullpage{
-    line-height: 100%;
-}
-
-.well.mine{
-    background-color: rgba(0,0,0,0.7);
-    border: none;
-    line-height: 100%;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-.center{
-    margin: 0 0 0 40%;
-}
-
-input[type="text"].biglogin, input[type="password"]{
-    height: 30px;
-    font-size: 24px;
-}
-
-#error{
-    display: inline;
-
-
-.spacer{
-    margin-bottom: 50px;
-}
-
-#black{
-    font-size: 24px;
-    color:#000000;
-}
-=======
 @font-face {
     font-family: 'SegoeUI-SemiBold';
     src: url('fonts/seguisb.eot');
@@ -74,11 +28,7 @@ body {
     font-family: 'SegoeUI', arial, sans-serif;
     color: #aeaeae;
     background: #fff;
-}
-
-.alert {
-	color: red;
-	display: none;
+    min-width:480px;
 }
 
 a { color: #0252aa; text-decoration: none; cursor: pointer; }
@@ -179,4 +129,3 @@ a:hover, a:active{
     margin:0 0 0 20%;
 }
 
->>>>>>> 2e6e5040bd86f2ce0b23e38caf786505c07cf95f

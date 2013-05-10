@@ -14,9 +14,12 @@ indexes:
   properties:
   - name: company_name
   - name: created
+<<<<<<< HEAD
 
 - kind: Passenger_Request
   properties:
   - name: status
   - name: created
     direction: desc
+=======
+>>>>>>> 2e6e5040bd86f2ce0b23e38caf786505c07cf95f
