@@ -215,16 +215,15 @@ function requestCab() {
             && to_time && passengers) {
         xhttp.onreadystatechange = function() {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-                 alert(xhttp.readyState + " " + xhttp.status)
+//                 alert(xhttp.readyState + " " + xhttp.status)
                 var resp = xhttp.responseText;
-                alert(resp);
                 if (resp === "successful") {
                     var current_url = window.location.href;
                     var passenger_url = current_url.substring(0, current_url
                             .lastIndexOf("#"))
                             + "#request-confirmation";
                     window.location.href = passenger_url;
-                    setInterval(getUpdates, 10000);
+                    getUpdates();
                 } else {
                     var error = "Please check your internet connection";
                     getError("request_error", error)
@@ -274,7 +273,6 @@ function checkHistory() {
                     		+ "<br><label>To:</label>" + history[i].request_destination + "</li>";
 
                 }
-                window.console.log(data);
                 history_elem.innerHTML = data;
 
             } else {
@@ -360,9 +358,10 @@ function getRateValue(name) {
 }
 
 function getUpdates() {
+	alert("in updates")
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            // alert(xhttp.readyState + " " + xhttp.status)
+             alert(xhttp.readyState + " " + xhttp.status)
             var resp = xhttp.responseText;
             alert(resp);
             if (resp != "empty") {
@@ -372,15 +371,13 @@ function getUpdates() {
 //                        + "#request-confirmation";
 //                
 //                window.location.href = passenger_url;
-                setInterval(getUpdates, 10000);
+            	alert("okay, notification on the way")
             } else {
-                var error = "Please check your internet connection";
-                getError("request_error", error)
+            	getUpdates();
             }
-
         }
     }
-    var url = 'http://cabkonekt.appspot.com/update?phone_number=' + number.value;
-    xhttp.open('POST', url, true);
+    var url = '/update?phone_number=' + number.value;
+    xhttp.open('GET', url, true);
     xhttp.send();
 }
