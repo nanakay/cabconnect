@@ -1,0 +1,44 @@
+body{
+    background-image: url("../img/Accracab.png");
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.navbar-inner{
+    width: 100%;
+    padding: 5px;
+}
+
+.fullpage{
+    line-height: 100%;
+}
+
+.well.mine{
+    background-color: rgba(0,0,0,0.7);
+    border: none;
+    line-height: 100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.center{
+    margin: 0 0 0 40%;
+}
+
+input[type="text"].biglogin, input[type="password"]{
+    height: 30px;
+    font-size: 24px;
+}
+
+#error{
+    display: inline;
+
+
+.spacer{
+    margin-bottom: 50px;
+}
+
+#black{
+    font-size: 24px;
+    color:#000000;
+}

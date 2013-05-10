@@ -1,0 +1,33 @@
+<!-- Start of accept or decline modal message -->
+{% for request in pending_requests %}
+<div id="{{request.key()}}" class="modal hide fade">
+	<div class="modal-header">
+		<input name="request_key" value="{{request.key()}}" type="hidden">
+		<button class="close" data-dismiss="modal">×</button>
+		<h3>Tell The Client Something</h3>
+	</div>
+
+	<div class="modal-body">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="pass_details span10">
+
+					<form class="form-horizontal" method="POST">
+						<div class="help-block">
+							<textarea class="span10" name="message">Hi {{request.passenger.first_name}},</textarea>
+							<button name="response" type="submit"
+								class="btn btn-medium btn-info">OK</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<p>
+			<i>Accra Cab Services</i>
+		</p>
+	</div>
+</div>
+{% endfor %}
+<!-- End of accept or decline modal message -->

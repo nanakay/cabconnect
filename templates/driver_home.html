@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Accra Cab Services</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link href="../css/bootstrap-responsive.min.css" type="text/css"
+	rel="stylesheet">
+<link href="../css/styles.css" type="text/css" rel="stylesheet">
+
+</head>
+
+<body class="container">
+	<script>
+    
+</script>
+
+	<div class="navbar navbar-inverse nav">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="/">Accra Cab Services</a>
+
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li class="divider-vertical"></li>
+						<li><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+					</ul>
+					<div class="pull-right">
+						<ul class="nav pull-right">
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown">Welcome, {{company.company_name}} <b
+									class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="/user/preferences"><i class="icon-cog"></i>
+											Profile</a></li>
+									<li><a href="/help/support"><i class="icon-envelope"></i>
+											Settings</a></li>
+									<li class="divider"></li>
+									<li><a href="/auth/logout"><i class="icon-off"></i>
+											Logout</a></li>
+								</ul></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="request">
+		<h3>List of Requests From Clients</h3>
+		<hr>
+		{% for request in passenger_requests %}
+		<div class="pass_details">
+			<!--  <img alt="" src="/img?img_key={{request.passenger.key()}}">-->
+			<span><label>Full Name:</label>
+				{{request.passenger.first_name}} {{request.passenger.last_name}}</span><br>
+			<span><label>Current Location:</label>
+				{{request.current_location}}</span><br> <span><label>Destination:</label>
+				{{request.destination}}</span><br> <a class="btn btn-primary"
+				data-toggle="modal" href="#{{request.key()}}_request">More
+				Details</a>
+		</div>
+		<hr>
+		{% endfor %}
+	</div>
+
+	{% for request in passenger_requests %}
+	<div id="{{request.key()}}_request" class="modal hide fade">
+		<div class="modal-header">
+			<button class="close" data-dismiss="modal">×</button>
+			<h3>Passenger's Request Details</h3>
+		</div>
+
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="span2">
+						<div class="logowrapper">
+							<img width="100px" height="100px" class="logoicon"
+								src="/img?img_key={{request.passenger.key()}}" alt="App Logo" />
+						</div>
+					</div>
+					<div class="pass_details span10">
+						<div>
+							<label>Full Name:</label> {{request.passenger.first_name}}
+							{{request.passenger.last_name}}
+						</div>
+						<div>
+							<label>Phone Number:</label> {{request.passenger.phone_number}}
+						</div>
+						<div>
+							<label>Current Location:</label> {{request.current_location}}
+						</div>
+						<div>
+							<label>Destination:</label> {{request.destination}}
+						</div>
+						<div>
+							<label>Price Offered:</label> {{request.price_offer}}
+						</div>
+						<div>
+							<label>Other Details:</label> {{request.other_info}}
+						</div>
+						<form class="form-horizontal" method="POST">
+							<hr>
+							<div class="help-block">
+								<a class="btn btn-medium btn-info" name="response"
+									data-dismiss="modal" data-toggle="modal"
+									href="#{{request.key()}}">Accept</a> <a
+									class="btn btn-medium btn-info" name="response"
+									data-dismiss="modal" data-toggle="modal"
+									href="#{{request.key()}}">Decline</a> <a
+									class="btn btn-medium btn-info" name="response"
+									data-dismiss="modal" data-toggle="modal" href="#">Cancel</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<p>
+				<i>Accra Cab Services</i>
+			</p>
+		</div>
+	</div>
+	{% endfor %}
+
+	<!-- Start of accept or decline modal message -->
+	{% for request in passenger_requests %}
+	<div id="{{request.key()}}" class="modal hide fade">
+		<div class="modal-header">
+			<input name="request_key" value="{{request.key()}}" type="hidden">
+			<button class="close" data-dismiss="modal">×</button>
+			<h3>Tell The Client Something</h3>
+		</div>
+
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="pass_details span10">
+
+						<form class="form-horizontal" method="POST">
+							<div class="help-block">
+								<textarea class="span10" name="message">Hi {{request.passenger.first_name}},</textarea>
+								<button name="response" type="submit"
+									class="btn btn-medium btn-info">OK</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<p>
+				<i>Accra Cab Services</i>
+			</p>
+		</div>
+	</div>
+	{% endfor %}
+	<!-- End of accept or decline modal message -->
+
+	<!--  
+		<div class="well" style="width:300px; padding: 8px 0;">
+    <div style="overflow-y: hidden; overflow-x: hidden;">
+        <ul class="nav nav-list">
+            <li><label class="tree-toggler nav-header">Header 1</label>
+                <ul class="nav nav-list tree">
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                </ul>
+            </li>
+            <li class="divider"></li>
+            {% for request in passenger_requests %}
+            <li><label class="tree-toggler nav-header"><a data-toggle = "collapse" href = "#like">Full Name: {{request.passenger.first_name}} {{request.passenger.last_name}}</a></label>
+                <ul id = "like" class="nav nav-list tree collapse">
+                    <span>phone Number: {{request.passenger.phone_number}}</span><br>
+					<span>Current Location: {{request.current_location}}</span><br>
+					<span>Destination: {{request.destination}}</span><br>
+					<span>Price Offered: {{request.price_offer}}</span><br>
+					<span>Added Details: {{request.other_info}}</span><br>
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+   
+</div>
+ -->
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/scripts.js"></script>
+</body>
+</html>
