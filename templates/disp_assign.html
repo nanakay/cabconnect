@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Dashboard | Accra Cab Admin</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css" media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../css/text.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../css/grid.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../css/layout.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../css/nav.css" media="screen" />
+    <link rel="stylesheet" href="../css/form.css" type="text/css" />
+
+
+    <script src="../js/jquery.js" type="text/javascript"></script>
+    <script src="../js/jquery-ui/jquery-ui.js"></script>
+    <script src="../js/jquery.leanModal.min.js"></script>
+
+    <script>
+        $(function() {
+            $( "#accordion" ).accordion({
+                heightStyle: "content",
+                collapsible: true
+            });
+            $(".callModal").leanModal({
+                top : 20,
+                left: 200,
+                overlay : 0.8,
+                closeButton: ".modal_close" });
+        });
+
+    </script>
+
+</head>
+<body id="thebluebg">
+<div class="container_12">
+    <div class="grid_12 header-repeat">
+        <div id="branding">
+            <div class="floatleft">
+                <img src="../img/ACS_LOGO.png" alt="Logo"></div>
+            <div style="color: white; font-size: 20px" class="prefix_6">{{msg }}</div>
+            <div class="floatright">
+                <div class="floatleft">
+                    <img src="../css/img/img-profile.jpg" alt="Profile Pic" /></div>
+                <div class="floatleft marginleft10">
+                    <ul class="inline-ul floatleft">
+                        <li>Hello Admin</li>
+                        <li><a href="/admin">Logout</a></li>
+                    </ul>
+                    <br />
+                    {#                    <span class="small grey">Last Login: 3 hours ago</span>#}
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="grid_12">
+        <ul class="nav main">
+            <li class="ic-dashboard"><a href="#"><span>Dashboard</span></a> </li>
+            <li class="ic-charts"><a href="#"><span>Check Transactions</span></a></li>
+            <li class="ic-grid-tables"><a href="/admin_cars"><span>View Cars</span></a></li>
+            <li class="ic-notifications"><a href="javascript:"><span>Config</span></a>
+                <ul>
+                    <li><a href="#newDriver" class="callModal">Add Driver</a> </li>
+                    <li><a href="#newAdmin" class="callModal">Add Admin</a> </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="clear">
+    </div>
+
+    <div class="grid_2">
+        <div class="box sidemenu">
+            <div class="block" id="accordion">
+                <h3>Request</h3>
+                <div>
+                    <li><a href="/admin_dashboard?options=Pending">Pending</a></li>
+                    <li><a href="/admin_dashboard?options=Active">Active</a></li>
+                    <li><a href="/admin_dashboard?options=Completed">Completed</a></li>
+                </div>
+                <h3>Schedules</h3>
+                <div>
+                    <p>
+                    <li><a href="#">Driver Salary</a></li>
+                    <li><a href="#"></a>Client Notifications</li>
+                    <li><a href="#"></a>Car Maintenance</li>
+                    </p>
+                </div>
+                <h3>Feedback</h3>
+                <div>
+                    <p>
+                    <li><a href="#">User</a></li>
+                    <li><a href="#"></a>Driver</li>
+                    <li><a href="#"></a>Company</li>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid_10">
+        <div class="box round">
+            <h2>Assign a driver to a Passenger Request</h2>
+            <div class="block prefix_0">
+                <form class="formoid-default form brownbg"title="Assign a Driver" method="post">
+                    <div class="message warning" ><h2 class="title">Driver Selection</h2></div>
+                    <div class="message warning ">
+                        <span class="title">Passenger: <span class="required">{{ request.passenger.first_name }} {{ request.passenger.last_name }}</span></span>
+                    </div>
+                    <div class="message warning ">
+                        <span class="title">Request ID: <span class="required">{{ request.key().id()}}</span></span>
+                    </div>
+                    <select style="width: 96%; margin: 0 2%;" name="driver">
+                        {% for availabledriver in  availables %}
+                            <option>{{ availabledriver.first_name }} {{ availabledriver.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="element-textarea" ><label class="title" style="color: #f5fffa">Any Additional Information</label>
+                        <textarea name="driver_info" cols="20" rows="5" draggable="false"></textarea></div>
+                    <div class="element-submit" ><a class="btn element submit" href="/admin_dashboard?user={{request.key()}}" name="assignment ">Assign Driver</a></div>
+                </form>
+            </div>
+
+
+            <div class="clear">
+            </div>
+            <div class="clear">
+            </div>
+            <div id="site_info">
+                <p>
+                    <a>&copy; 4Apps Solutions</a>. All Rights Reserved.
+                </p>
+            </div>
+</body>
+</html>

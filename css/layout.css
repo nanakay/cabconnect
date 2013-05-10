@@ -1263,6 +1263,11 @@ td.details {
     border: 1px solid #000000;
 }
 
+<<<<<<< HEAD
 .holder {
 	height: 180px;
+=======
+.maintainheight{
+    height: 150px;
+>>>>>>> 69a4f65693250401b5482f8073336dc2d4d7726f
 }
