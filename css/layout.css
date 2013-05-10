@@ -1262,3 +1262,7 @@ td.details {
 .stat-col:hover{
     border: 1px solid #000000;
 }
+
+.holder {
+	height: 180px;
+}

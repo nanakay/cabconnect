@@ -119,10 +119,7 @@ class PassengerHandler(Handler):
         error = self.request.get("error")
         key = self.request.cookies.get("detector")
         passenger = db.get(key)
-        accepted_connections = Connected.gql("WHERE viewed = False")
-        no_of_notifications = count_connected_notifications(accepted_connections)
-        self.render("passenger.html", passenger=passenger, error=error, notifications=no_of_notifications,
-            accepted_connections=accepted_connections)
+        self.render("passenger.html", passenger=passenger, error=error)
 
     def post(self):
         key = self.request.cookies.get("detector")
@@ -305,7 +302,7 @@ class AdminLogin(Handler):
         admin_password = self.request.get("password")
         if admin_email and admin_password:
             status, object = Admin.check_admin(email=admin_email, password=admin_password)
-            #            status, object = Admin.create_admin(first_name="Admin", last_name="User",phone_number='020666',email=admin_email, password=admin_password)
+#             status, object = Admin.create_admin(first_name="Admin", last_name="User",phone_number='0200',email=admin_email, password=admin_password)
             if status:
                 self.redirect('/admin_dashboard?options=Pending')
             else:
@@ -408,22 +405,6 @@ def get_date(date_object):
 def get_time(time_object):
     return time_object.strftime("%H : %M")
 
-
-def history_toJson(requests):
-    history = []
-    history_obj = {}
-#    for request in requests:
-#     day = date_object.day
-#     month = date_object.month
-#     year = date_object.year
-#     
-#     date = str(day) + " " + str(month) + " " + str(year)
-#    date = date_object.strftime("%d %b, %Y")
-#    return date
-
-def get_time(time_object):
-    return time_object.strftime("%H : %M")
- 
 def history_toJson(requests):
     
     history = []
@@ -517,46 +498,15 @@ class UpdateHandler(Handler):
             self.write(new_toJson(newTransactions))
         else:
             self.write("empty")
-
-def update_attribute(transaction):
-    for entity in transaction:
-        entity.viewed = True
-        entity.put()
-
-def new_toJson(transactions):
-    update_obj = []
-
-    for entity in transactions:
-        entity_obj = {}
-        entity_obj["passenger"] = entity.passenger.first_name + " " + entity_obj.passenger.last_name
-        entity_obj["location"] = entity.request.location
-        entity_obj["destination"] = entity.request.destination
-        entity_obj["location"] = entity.request.location
-        entity_obj["from_date"] = entity.request.from_date
-        entity_obj["to_date"] = entity.request.to_date
-        entity_obj["pickup_time"] = entity.request.pickup_time
-        entity_obj["to_time"] = entity.request.to_time
-        entity_obj["driver"] = entity.driver.first_name + " " + entity_obj.driver.last_name
-
-        update_obj.append(entity_obj)
-
-    json_update = json.dumps(update_obj)
-    return json_update
-
-class UpdateHandler(Handler):
+            
+class UpdateAdminHandler(Handler):
     def get(self):
-        phone_number = self.request.get("phone_number")
-        passenger = Passenger.gql("WHERE phone_number = :1", phone_number)
-
-        newTransactions = Transaction.gql("WHERE passenger = :1 AND viewed = False", passenger)
-
-        if newTransactions:
-            update_attribute(newTransactions)
-
-            json_obj = new_toJson(newTransactions)
-            self.write(json_obj)
-        else:
-            self.write("empty")
+        pending = Passenger_Request.gql("WHERE status = :1 ORDER BY created DESC", "Pending")
+        active = Passenger_Request.gql("WHERE status = :1 ORDER BY created DESC", "Active")
+        completed = Passenger_Request.gql("WHERE status = :1 ORDER BY created DESC", "Completed")
+        available = Driver.gql("WHERE available = True")
+        
+        self.write(str(pending.count()) + " " + str(active.count()) + " " + str(available.count()))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -574,5 +524,6 @@ app = webapp2.WSGIApplication([
     ('/admin_cars', AdminCars),
     ('/history', HistoryHandler),
     ('/feedback', FeedbackHandler),
-    ('/update', UpdateHandler)
+    ('/update', UpdateHandler),
+    ('/admin_update', UpdateAdminHandler)
 ], debug=True)

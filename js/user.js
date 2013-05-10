@@ -381,3 +381,36 @@ function getUpdates() {
     xhttp.open('GET', url, true);
     xhttp.send();
 }
+
+function updateAdminPage() {
+	var total_pending = getById("total_pending");
+	var total_active = getById("total_active");
+	var total_available = getById("total_available");
+	
+	 xhttp.onreadystatechange = function() {
+	        if (xhttp.readyState == 4 && xhttp.status == 200) {
+//	             alert(xhttp.readyState + " " + xhttp.status)
+	            var resp = xhttp.responseText;
+	            
+	            countArray = resp.split(" ");
+	            
+	            
+	            total_available.innerHTML = countArray[2];
+	            
+	            if (countArray[0] > total_pending.innerHTML || countArray[1] > total_active.innerHTML || countArray[2] > total_available.innerHTML) {
+	            	total_pending.innerHTML = countArray[0];
+		            total_active.innerHTML = countArray[1];
+		            total_available.innerHTML = countArray[2];
+		            
+		            window.location.reload();
+	            }
+	        }
+	    }
+	    var url = '/admin_update';
+	    xhttp.open('GET', url, true);
+	    xhttp.send();
+}
+
+function adminUpdateTrigger() {
+	setInterval(updateAdminPage, 10000)
+}
