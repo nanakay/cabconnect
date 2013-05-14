@@ -1168,6 +1168,7 @@ td.details {
 }
 #accordion .ui-accordion-content a {
     color: #000000;
+    display: block;
 }
 #accordion .ui-accordion-header:first-of-type {
     background-color: #fa9300;

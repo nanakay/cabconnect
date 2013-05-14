@@ -119,10 +119,10 @@ class PassengerHandler(Handler):
         error = self.request.get("error")
         key = self.request.cookies.get("detector")
         passenger = db.get(key)
-        accepted_connections = Connected.gql("WHERE viewed = False")
-        no_of_notifications = count_connected_notifications(accepted_connections)
-        self.render("passenger.html", passenger=passenger, error=error, notifications=no_of_notifications,
-            accepted_connections=accepted_connections)
+#        accepted_connections = Connected.gql("WHERE viewed = False")
+#        no_of_notifications = count_connected_notifications(accepted_connections)
+#        self.render("passenger.html", passenger=passenger, error=error, notifications=no_of_notifications,
+#            accepted_connections=accepted_connections)
 
     def post(self):
         key = self.request.cookies.get("detector")
@@ -305,7 +305,7 @@ class AdminLogin(Handler):
         admin_password = self.request.get("password")
         if admin_email and admin_password:
             status, object = Admin.check_admin(email=admin_email, password=admin_password)
-            #            status, object = Admin.create_admin(first_name="Admin", last_name="User",phone_number='020666',email=admin_email, password=admin_password)
+#            status, object = Admin.create_admin(first_name="Admin", last_name="User",phone_number='020666',email=admin_email, password=admin_password)
             if status:
                 self.redirect('/admin_dashboard?options=Pending')
             else:
@@ -335,7 +335,6 @@ class AdminHandler(Handler):
         else:
             holder = pending
         self.render("disp_dashboard.html", holder = holder, pending = pending.count(), active = active.count(),available=available.count())
-        #        feedbacks = Feedback.gql("ORDER BY created ASC")
 
 
     def post(self):
@@ -461,6 +460,10 @@ class HistoryHandler(Handler):
             self.write(history_toJson(requests))
 
 class FeedbackHandler(Handler):
+    def get(self):
+        feedbacks = Feedback.gql("ORDER BY created DESC")
+        self.render('disp_rating.html', feedbacks=feedbacks)
+
     def post(self):
         phone_number = self.request.get("phone_number")
         passenger = Passenger.gql("WHERE phone_number = :1", phone_number).get()
