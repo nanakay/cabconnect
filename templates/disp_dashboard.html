@@ -17,6 +17,8 @@
     <script src="../js/jquery.js" type="text/javascript"></script>
     <script src="../js/jquery-ui/jquery-ui.js"></script>
     <script src="../js/jquery.leanModal.min.js"></script>
+    <script src="../js/user.js"></script>
+    <script src="/js/helpful.js"></script>
 
     <script>
         $(function() {
@@ -30,11 +32,11 @@
                 overlay : 0.8,
                 closeButton: ".modal_close" });
         });
-
+			
     </script>
 
 </head>
-<body id="thebluebg">
+<body id="thebluebg" onload = "adminUpdateTrigger()">
 <div class="container_12">
     <div class="grid_12 header-repeat">
         <div id="branding">
@@ -110,19 +112,19 @@
             <div class="block prefix_3">
                 <a href="/admin_dashboard?options=Pending">
                     <div class="stat-col grid_2">
-                        <span>Current Pending</span>
-                        <p class="purple prefix_4">
-                            <img src="../css/img/icon-direction.png" alt="" />&nbsp;{{pending}}</p>
+                        <span>Pending Requests</span>
+                        <p class="purple prefix_3">
+                            <img src="../css/img/icon-direction.png" alt="" /><span id = "total_pending">{{pending}}</span></p>
                     </div></a>
                 <a href="/admin_dashboard?options=Active"><div class="stat-col grid_2">
-                    <span>Current Active</span>
+                    <span>Active Requests</span>
                     <p class="yellow prefix_3">
-                        <img src="../css/img/icon-notifications.png" alt="" />&nbsp;{{active}}</p>
+                        <img src="../css/img/icon-notifications.png" alt="" /><span id = "total_active">{{active}}</span></p>
                 </div></a>
                 <a href="/admin_dashboard?options=Available"><div class="stat-col grid_2">
                     <span>Available Drivers</span>
                     <p class="green prefix_3">
-                        <img src="../css/img/icon-gallery.png" alt="" />&nbsp;{{available}}</p>
+                        <img src="../css/img/icon-gallery.png" alt="" /><span id = "total_available">{{available}}</span></p>
                 </div></a>
                 <div class="clear">
                 </div>
@@ -132,18 +134,19 @@
             <h2>Requests</h2>
             <div class="box grid_12 textdetails ">
                 <div class="pushleft80">
-                    {#                    request1#}
+                    {#request1#}
                     {% for request in holder %}
                         {% if not request.kind() == 'Driver' %}
-                            <a href="#{{request.key()}}" class="callModal"><div class="message info grid_5 maintainheight">
+                        
+                            <a href="#{{request.key()}}" class="callModal"><div class="message info grid_5 holder">
                                 <span class="textheader">{{request.passenger.first_name}}  {{request.passenger.last_name}}</span>
                                 <div>
                                     <p>Location: {{request.current_location}}</p>
                                     <p>Destination: {{request.destination}}</p>
                                 </div>
                                 <div>
-                                    <p>Time: {{request.pickup_time}}</p>
-                                    <p>Date: 10/12/2013</p>
+                                    <p>Time: {{request.pickup_time.strftime("%H : %M %p")}}</p>
+                                    <p>Request Date: {{request.created.strftime("%d %b, %Y")}}</p>
                                 </div>
                                 <div>Other Details: {{request.other_info}}</div>
                             </div>
